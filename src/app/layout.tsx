@@ -15,26 +15,47 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen">
-        <aside className="w-64 bg-gray-900 text-white flex flex-col p-4 space-y-4">
-          <h1 className="text-xl font-bold">Tony</h1>
+        <aside className="fixed top-0 left-0 h-screen w-72 bg-gray-800 text-white flex flex-col p-10 py-24 space-y-4">
+          <h1 className="text-2xl font-bold">Tony</h1>
+          <p className="text-gray-300">I build things</p>
           <nav className="flex flex-col space-y-2">
-            <Link href="/" className="hover:text-red-300 text-lg">
-              Home
+            <Link
+              href="/about"
+              className="hover:text-gray-300 text-md font-semibold tracking-wide"
+            >
+              About
             </Link>
-            <Link href="/projects" className="hover:text-red-300 text-lg">
+            <Link
+              href="/experience"
+              className="hover:text-gray-300 text-md font-semibold tracking-wide"
+            >
+              Education
+            </Link>
+            <Link
+              href="/experience"
+              className="hover:text-gray-300 text-md font-semibold tracking-wide"
+            >
+              Experience
+            </Link>
+            <Link
+              href="/experience"
+              className="hover:text-gray-300 text-md font-semibold tracking-wide"
+            >
               Projects
             </Link>
-            <Link href="/blog" className="hover:text-red-300 text-lg">
+            <Link
+              href="/blog"
+              className="hover:text-gray-300 text-md font-semibold tracking-wide"
+            >
               Blog
-            </Link>
-            <Link href="/about" className="hover:text-red-300 text-lg">
-              About
             </Link>
           </nav>
         </aside>
 
         {/* Main content */}
-        <main className="flex-1">{children}</main>
+        <main className="ml-72 flex-1 h-screen overflow-y-auto py-24 px-96 bg-[radial-gradient(#EFEFEF_1px,transparent_2px)] [background-size:40px_40px]">
+          {children}
+        </main>
       </body>
     </html>
   );
