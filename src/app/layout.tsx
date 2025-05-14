@@ -53,7 +53,12 @@ export default function RootLayout({
         </aside>
 
         {/* Main content */}
-        <main className="ml-72 flex-1 h-screen overflow-y-auto py-24 px-96 bg-[radial-gradient(#EFEFEF_1px,transparent_2px)] [background-size:40px_40px]">
+        <main
+          className="ml-72 flex-1 h-screen overflow-y-auto py-24 
+  px-4 sm:px-8 md:px-16 lg:px-24 xl:px-48 2xl:px-96 
+  bg-[radial-gradient(#EFEFEF_1px,transparent_2px)] 
+  [background-size:40px_40px]"
+        >
           {children}
         </main>
       </body>

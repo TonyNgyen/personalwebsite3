@@ -9,7 +9,7 @@ function Education() {
           href="https://cse.ucsd.edu/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100 rounded"
+          className="flex flex-col transition duration-200 sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
         >
           <h2 className="text-xl min-w-[10rem] text-gray-500">
             2025 -{" "}
@@ -24,7 +24,7 @@ function Education() {
           href="https://cse.ucsd.edu/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100 rounded"
+          className="flex flex-col transition duration-200 sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
         >
           <h2 className="text-xl min-w-[10rem] text-gray-500">2021 - 2025</h2>
           <div>
