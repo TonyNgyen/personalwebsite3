@@ -19,42 +19,48 @@ export default function RootLayout({
           <h1 className="text-2xl font-bold">Tony</h1>
           <p className="text-gray-300">I build things</p>
           <nav className="flex flex-col space-y-2">
-            <Link
-              href="/about"
+            <a
+              href="#about"
               className="hover:text-gray-300 text-md font-semibold tracking-wide"
             >
               About
-            </Link>
-            <Link
-              href="/experience"
+            </a>
+            <a
+              href="#education"
               className="hover:text-gray-300 text-md font-semibold tracking-wide"
             >
               Education
-            </Link>
-            <Link
-              href="/experience"
+            </a>
+            <a
+              href="#experience"
               className="hover:text-gray-300 text-md font-semibold tracking-wide"
             >
               Experience
-            </Link>
-            <Link
-              href="/experience"
+            </a>
+            <a
+              href="#projects"
               className="hover:text-gray-300 text-md font-semibold tracking-wide"
             >
               Projects
-            </Link>
-            <Link
-              href="/blog"
+            </a>
+            <a
+              href="#notes"
+              className="hover:text-gray-300 text-md font-semibold tracking-wide"
+            >
+              Notes
+            </a>
+            <a
+              href="#blog"
               className="hover:text-gray-300 text-md font-semibold tracking-wide"
             >
               Blog
-            </Link>
+            </a>
           </nav>
         </aside>
 
         {/* Main content */}
         <main
-          className="ml-72 flex-1 h-screen overflow-y-auto py-24 
+          className="ml-72 flex-1 py-24 
   px-4 sm:px-8 md:px-16 lg:px-24 xl:px-48 2xl:px-96 
   bg-[radial-gradient(#EFEFEF_1px,transparent_2px)] 
   [background-size:40px_40px]"
