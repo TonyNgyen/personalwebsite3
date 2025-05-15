@@ -1,5 +1,5 @@
 import React from "react";
-import { Tooltip } from "../components/Tooltip";
+import { Tooltip } from "../../components/Tooltip";
 import { FiChevronRight, FiInfo } from "react-icons/fi";
 
 function Blog() {

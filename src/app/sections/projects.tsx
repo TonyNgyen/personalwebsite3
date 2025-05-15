@@ -9,9 +9,14 @@ function Projects() {
           href="https://cse.ucsd.edu/"
           target="_blank"
           rel="noopener noreferrer"
-          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
+          className="transition flex duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
         >
-          <div className="min-w-[10rem] text-gray-500 bg-gray-500 aspect-video rounded transition sm:translate-y-1"></div>
+          <div className="min-w-[10rem] flex justify-center">
+            <img
+              src="/images/projects/prep.png"
+              className="h-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+            />
+          </div>
           <div className="">
             <h2 className="text-xl font-semibold">Prep</h2>
             <h3>
@@ -45,7 +50,10 @@ function Projects() {
           rel="noopener noreferrer"
           className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
         >
-          <div className="min-w-[10rem] text-gray-500 bg-gray-500 aspect-video rounded sm:translate-y-1"></div>
+          <img
+            src="/images/projects/toned.png"
+            className="w-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+          />
           <div>
             <h2 className="text-xl font-semibold">Toned</h2>
             <h3>
@@ -73,7 +81,10 @@ function Projects() {
           rel="noopener noreferrer"
           className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
         >
-          <div className="min-w-[10rem] text-gray-500 bg-gray-500 aspect-video rounded sm:translate-y-1"></div>
+          <img
+            src="/images/projects/personal.png"
+            className="w-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+          />
           <div>
             <h2 className="text-xl font-semibold">Personal Website</h2>
             <h3>My personal website! Built with simplicity in mind.</h3>
@@ -96,7 +107,10 @@ function Projects() {
           rel="noopener noreferrer"
           className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
         >
-          <div className="min-w-[10rem] text-gray-500 bg-gray-500 aspect-video rounded sm:translate-y-1"></div>
+          <img
+            src="/images/projects/devlogs.png"
+            className="w-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+          />
           <div>
             <h2 className="text-xl font-semibold">DevLogs</h2>
             <h3>
