@@ -13,37 +13,37 @@ export default async function Sidebar() {
       <p className="text-gray-300">I build things</p>
       <nav className="flex flex-col space-y-2">
         <Link
-          href="#about"
+          href="/#about"
           className="hover:text-gray-300 text-md font-semibold tracking-wide"
         >
           About
         </Link>
         <Link
-          href="#education"
+          href="/#education"
           className="hover:text-gray-300 text-md font-semibold tracking-wide"
         >
           Education
         </Link>
         <Link
-          href="#experience"
+          href="/#experience"
           className="hover:text-gray-300 text-md font-semibold tracking-wide"
         >
           Experience
         </Link>
         <Link
-          href="#projects"
+          href="/#projects"
           className="hover:text-gray-300 text-md font-semibold tracking-wide"
         >
           Projects
         </Link>
         <Link
-          href="#notes"
+          href="/#notes"
           className="hover:text-gray-300 text-md font-semibold tracking-wide"
         >
           Notes
         </Link>
         <Link
-          href="#blog"
+          href="/#blog"
           className="hover:text-gray-300 text-md font-semibold tracking-wide"
         >
           Blog

@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Blog {
+  id        Int        @id @default(autoincrement())
+  title     String
+  link      String     @unique
+  content   String
+  createdAt DateTime   @default(now())
+  tags      BlogTag[]  // relation to join table
+}
+
+model Note {
+  id        Int        @id @default(autoincrement())
+  title     String
+  link      String     @unique
+  content   String
+  createdAt DateTime   @default(now())
+  tags      NoteTag[]  // relation to join table
+}
+
+model Tag {
+  id          Int      @id @default(autoincrement())
+  label       String   @unique
+  emoji       String?
+  bgColor     String   // Tailwind class (e.g., 'bg-blue-100')
+  textColor String   // Tailwind class (e.g., 'border-blue-500')
+  blogs       BlogTag[]
+  notes       NoteTag[]
+}
+
+// Join table for Blog <-> Tag many-to-many
+model BlogTag {
+  blogId Int
+  tagId  Int
+  blog   Blog @relation(fields: [blogId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
+
+  @@id([blogId, tagId]) // composite primary key
+}
+
+// Join table for Note <-> Tag many-to-many
+model NoteTag {
+  noteId Int
+  tagId  Int
+  note   Note @relation(fields: [noteId], references: [id])
+  tag    Tag  @relation(fields: [tagId], references: [id])
+
+  @@id([noteId, tagId]) // composite primary key
+}
