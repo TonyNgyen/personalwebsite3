@@ -34,7 +34,7 @@ export async function createNote(formData: FormData) {
     },
   });
 
-  revalidatePath("/"); // Revalidate homepage or blog list if needed
+  revalidatePath("/");
 }
 
 export async function getNotes() {
@@ -43,7 +43,7 @@ export async function getNotes() {
     include: {
       tags: {
         include: {
-          tag: true, // Include tag details like `label`
+          tag: true,
         },
       },
     },
