@@ -87,6 +87,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -129,6 +132,11 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
@@ -153,7 +161,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\tonyn\\Documents\\VSCode\\personalwebsite3\\src\\generated\\prisma",
+      "value": "/Users/tony/Programming/personalwebsite3/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -162,7 +170,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       },
       {
@@ -175,7 +183,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\tonyn\\Documents\\VSCode\\personalwebsite3\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/tony/Programming/personalwebsite3/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -188,18 +196,17 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
-  "postinstall": false,
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "file:./dev.db"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  binaryTargets = [\"native\", \"windows\", \"darwin-arm64\"]\n  output        = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Blog {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      BlogTag[] // relation to join table\n}\n\nmodel Note {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      NoteTag[] // relation to join table\n}\n\nmodel Tag {\n  id        Int       @id @default(autoincrement())\n  label     String    @unique\n  emoji     String?\n  bgColor   String // Tailwind class (e.g., 'bg-blue-100')\n  textColor String // Tailwind class (e.g., 'border-blue-500')\n  blogs     BlogTag[]\n  notes     NoteTag[]\n}\n\n// Join table for Blog <-> Tag many-to-many\nmodel BlogTag {\n  blogId Int\n  tagId  Int\n  blog   Blog @relation(fields: [blogId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([blogId, tagId]) // composite primary key\n}\n\n// Join table for Note <-> Tag many-to-many\nmodel NoteTag {\n  noteId Int\n  tagId  Int\n  note   Note @relation(fields: [noteId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([noteId, tagId]) // composite primary key\n}\n",
-  "inlineSchemaHash": "0f37fa8a7830886fdb308ba36cdfb1b1a05680b85814fe8a3c65b8c5a149cd24",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  binaryTargets = [\"native\", \"windows\", \"darwin-arm64\"]\n  output        = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Blog {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      BlogTag[] // relation to join table\n}\n\nmodel Note {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      NoteTag[] // relation to join table\n}\n\nmodel Tag {\n  id        Int       @id @default(autoincrement())\n  label     String    @unique\n  emoji     String?\n  bgColor   String\n  textColor String\n  blogs     BlogTag[]\n  notes     NoteTag[]\n}\n\n// Join table for Blog <-> Tag many-to-many\nmodel BlogTag {\n  blogId Int\n  tagId  Int\n  blog   Blog @relation(fields: [blogId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([blogId, tagId]) // composite primary key\n}\n\n// Join table for Note <-> Tag many-to-many\nmodel NoteTag {\n  noteId Int\n  tagId  Int\n  note   Note @relation(fields: [noteId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([noteId, tagId]) // composite primary key\n}\n",
+  "inlineSchemaHash": "ac489104e52e45751fe12dddc2395dd6b8cb311d4d5c507a199c1a60670b40b3",
   "copyEngine": true
 }
 
@@ -238,12 +245,12 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
-
-// file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
 path.join(process.cwd(), "src/generated/prisma/libquery_engine-darwin-arm64.dylib.node")
+
+// file annotations for bundling tools to include these files
+path.join(__dirname, "query_engine-windows.dll.node");
+path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/prisma/schema.prisma")
