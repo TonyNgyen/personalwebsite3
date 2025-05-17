@@ -2,8 +2,11 @@ import React from "react";
 import { Tooltip } from "../../components/Tooltip";
 import { FiInfo } from "react-icons/fi";
 import { FiChevronRight } from "react-icons/fi";
+import BlogCard from "@/components/BlogCard";
+import { getNotes } from "@/lib/note";
 
-function Notes() {
+async function Notes() {
+  const notes = await getNotes();
   return (
     <div className="space-y-4 tracking-wide -ml-4">
       <div className="flex items-center pl-4">
@@ -16,68 +19,20 @@ function Notes() {
       </div>
 
       <div className="space-y-4">
-        <a
-          href="https://cse.ucsd.edu/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
-        >
-          <div>
-            <h2 className="text-xl font-semibold">
-              Personal Website{" "}
-              <span className="text-emerald-500 font-bold">·</span>{" "}
-              <span className="text-gray-500">March 03, 2025</span>
-            </h2>
-            <h3>My personal website! Built with simplicity in mind.</h3>
-            <div className="flex gap-[6px] mt-3">
-              <div className="rounded-full bg-sky-100 px-3 py-0">
-                <p className="text-sky-600 font-semibold">✨New</p>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a
-          href="https://cse.ucsd.edu/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
-        >
-          <div>
-            <h2 className="text-xl font-semibold">
-              Personal Website{" "}
-              <span className="text-emerald-500 font-bold">·</span>{" "}
-              <span className="text-gray-500">March 03, 2025</span>
-            </h2>
-            <h3>My personal website! Built with simplicity in mind.</h3>
-            <div className="flex gap-[6px] mt-3">
-              <div className="rounded-full bg-gray-100 px-3 py-0">
-                <p className="text-gray-600 font-semibold">NextJS</p>
-              </div>
-            </div>
-          </div>
-        </a>
-        <a
-          href="https://cse.ucsd.edu/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
-        >
-          <div>
-            <h2 className="text-xl font-semibold">
-              Personal Website{" "}
-              <span className="text-emerald-500 font-bold">·</span>{" "}
-              <span className="text-gray-500">March 03, 2025</span>
-            </h2>
-            <h3>My personal website! Built with simplicity in mind.</h3>
-            <div className="flex gap-[6px] mt-3">
-              <div className="rounded-full bg-gray-100 px-3 py-0">
-                <p className="text-gray-600 font-semibold">NextJS</p>
-              </div>
-            </div>
-          </div>
-        </a>
+        {notes.map((note) => (
+          <BlogCard
+            key={note.id}
+            title={note.title}
+            url={
+              note.link.startsWith("http") ? note.link : `/notes/${note.link}`
+            }
+            date={new Date(note.createdAt)}
+            description={note.content.slice(0, 100)}
+            tags={note.tags?.map(({ tag }) => tag) || []}
+          />
+        ))}
       </div>
-      <a href="" className="group flex items-center gap-2">
+      <a href="/note" className="group flex items-center gap-2">
         <h2 className="pl-4 text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 group-hover:underline-offset-4 transition-all duration-200">
           View All Notes
         </h2>

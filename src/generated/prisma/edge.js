@@ -152,7 +152,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/tony/Programming/personalwebsite3/src/generated/prisma",
+      "value": "C:\\Users\\tonyn\\Documents\\VSCode\\personalwebsite3\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -161,12 +161,20 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "windows"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "darwin-arm64"
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/tony/Programming/personalwebsite3/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Users\\tonyn\\Documents\\VSCode\\personalwebsite3\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -180,6 +188,7 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -188,8 +197,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Blog {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      BlogTag[] // relation to join table\n}\n\nmodel Note {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      NoteTag[] // relation to join table\n}\n\nmodel Tag {\n  id        Int       @id @default(autoincrement())\n  label     String    @unique\n  emoji     String?\n  bgColor   String // Tailwind class (e.g., 'bg-blue-100')\n  textColor String // Tailwind class (e.g., 'border-blue-500')\n  blogs     BlogTag[]\n  notes     NoteTag[]\n}\n\n// Join table for Blog <-> Tag many-to-many\nmodel BlogTag {\n  blogId Int\n  tagId  Int\n  blog   Blog @relation(fields: [blogId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([blogId, tagId]) // composite primary key\n}\n\n// Join table for Note <-> Tag many-to-many\nmodel NoteTag {\n  noteId Int\n  tagId  Int\n  note   Note @relation(fields: [noteId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([noteId, tagId]) // composite primary key\n}\n",
-  "inlineSchemaHash": "aa9f835ea74c3cdf3551eb1654a0a6bd270fb06efdf11b8bdb8ba02fa3e2c08b",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  binaryTargets = [\"native\", \"windows\", \"darwin-arm64\"]\n  output        = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel Blog {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      BlogTag[] // relation to join table\n}\n\nmodel Note {\n  id        Int       @id @default(autoincrement())\n  title     String\n  link      String    @unique\n  content   String\n  createdAt DateTime  @default(now())\n  tags      NoteTag[] // relation to join table\n}\n\nmodel Tag {\n  id        Int       @id @default(autoincrement())\n  label     String    @unique\n  emoji     String?\n  bgColor   String // Tailwind class (e.g., 'bg-blue-100')\n  textColor String // Tailwind class (e.g., 'border-blue-500')\n  blogs     BlogTag[]\n  notes     NoteTag[]\n}\n\n// Join table for Blog <-> Tag many-to-many\nmodel BlogTag {\n  blogId Int\n  tagId  Int\n  blog   Blog @relation(fields: [blogId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([blogId, tagId]) // composite primary key\n}\n\n// Join table for Note <-> Tag many-to-many\nmodel NoteTag {\n  noteId Int\n  tagId  Int\n  note   Note @relation(fields: [noteId], references: [id])\n  tag    Tag  @relation(fields: [tagId], references: [id])\n\n  @@id([noteId, tagId]) // composite primary key\n}\n",
+  "inlineSchemaHash": "0f37fa8a7830886fdb308ba36cdfb1b1a05680b85814fe8a3c65b8c5a149cd24",
   "copyEngine": true
 }
 config.dirname = '/'
