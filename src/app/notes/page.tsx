@@ -2,6 +2,7 @@ import BlogCard from "@/components/BlogCard";
 import React from "react";
 import { getNotes } from "../admin/note-actions";
 import { FiChevronLeft } from "react-icons/fi";
+import Link from "next/link";
 
 async function BlogPage() {
   const notes = await getNotes();
@@ -26,15 +27,15 @@ async function BlogPage() {
       ) : (
         <div className="pl-4">
           <div className="text-xl font-semibold mb-4">
-            There are notes yet...
+            There are no notes yet...
           </div>
-          <a href="/" className="group flex items-center gap-2">
+          <Link href="/" className="group flex items-center gap-2">
             <FiChevronLeft className="text-2xl transition-transform duration-200 group-hover:-translate-x-2 group-hover:text-emerald-500" />
 
             <h2 className="text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 group-hover:underline-offset-4 transition-all duration-200">
               Go back home
             </h2>
-          </a>
+          </Link>
         </div>
       )}
     </div>

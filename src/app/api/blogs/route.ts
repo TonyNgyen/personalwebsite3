@@ -1,17 +1,9 @@
-// pages/api/blogs.ts (or /app/api/blogs/route.ts for Next.js 13 app dir)
+// src/app/api/blogs/route.ts (Next.js App Router API route)
 
 import { prisma } from "@/lib/prisma";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "GET") {
-    res.status(405).json({ error: "Method not allowed" });
-    return;
-  }
-
+export async function GET() {
   try {
     const blogs = await prisma.blog.findMany({
       include: {
@@ -25,8 +17,13 @@ export default async function handler(
         createdAt: "desc",
       },
     });
-    res.status(200).json(blogs);
+
+    return NextResponse.json(blogs);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch blogs" });
+    console.log(error)
+    return NextResponse.json(
+      { error: "Failed to fetch blogs" },
+      { status: 500 }
+    );
   }
 }

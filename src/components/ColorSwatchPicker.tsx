@@ -6,7 +6,6 @@ type ColorSwatch = {
 };
 
 type ColorSwatchPickerProps = {
-  label: string;
   color: string;
   onChange: (color: string) => void;
   swatches?: ColorSwatch[];
@@ -296,13 +295,11 @@ const tailwindColors = {
 const shadeLevels = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
 export function ColorSwatchPicker({
-  label,
   color,
   onChange,
 }: ColorSwatchPickerProps) {
   return (
     <div className="flex flex-col items-center">
-      {/* <label className="block font-semibold mb-2">{label}</label> */}
       <div
         style={{
           display: "grid",

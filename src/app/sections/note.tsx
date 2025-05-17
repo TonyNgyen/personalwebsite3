@@ -34,7 +34,7 @@ async function Notes() {
         </div>
       ) : (
         <div className="pl-4 text-xl font-semibold">
-          There are notes yet...
+          There are no notes yet...
         </div>
       )}
 

@@ -15,6 +15,7 @@ function Projects() {
             <img
               src="/images/projects/prep.png"
               className="h-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+              alt="Screenshot of Prep app"
             />
           </div>
           <div className="">
@@ -52,6 +53,7 @@ function Projects() {
         >
           <img
             src="/images/projects/toned.png"
+            alt="Screenshot of Toned app"
             className="w-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
           />
           <div>
@@ -60,7 +62,8 @@ function Projects() {
               A web app for managing your workouts, exercises, and goals. Create
               workouts as well as exercises which help you improve your
               weight-lifting journey. The app automatically logs your workouts
-              when you're done and saves your workout history and progression.
+              when you&apos;re done and saves your workout history and
+              progression.
             </h3>
             <div className="flex gap-[6px] mt-3">
               <div className="rounded-full bg-cyan-100 px-3 py-0">
@@ -84,6 +87,7 @@ function Projects() {
           <img
             src="/images/projects/personal.png"
             className="w-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+            alt="Screenshot of Personal Website"
           />
           <div>
             <h2 className="text-xl font-semibold">Personal Website</h2>
@@ -110,6 +114,7 @@ function Projects() {
           <img
             src="/images/projects/devlogs.png"
             className="w-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+            alt="Screenshot of DevLogs app"
           />
           <div>
             <h2 className="text-xl font-semibold">DevLogs</h2>

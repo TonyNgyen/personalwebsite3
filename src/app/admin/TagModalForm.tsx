@@ -93,7 +93,6 @@ export default function TagModalForm() {
                   className="w-14 aspect-square p-1 border border-[#ddd] rounded h-14"
                 />
                 <ColorSwatchPicker
-                  label="Background Color"
                   color={bgColor}
                   onChange={setBgColor}
                 />
@@ -109,7 +108,6 @@ export default function TagModalForm() {
                   className="w-14 aspect-square p-1 border border-[#ddd] rounded h-14"
                 />
                 <ColorSwatchPicker
-                  label="Background Color"
                   color={textColor}
                   onChange={setTextColor}
                 />

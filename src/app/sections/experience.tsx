@@ -26,7 +26,7 @@ function Experience() {
                 <li className="pl-1">
                   Collaborated with the instructional team to elevate the
                   quality of education delivered to students within the
-                  university's computer science department.
+                  university&apos;s computer science department.
                 </li>
                 <li className="pl-1">
                   Held regular office hours, providing a supportive environment

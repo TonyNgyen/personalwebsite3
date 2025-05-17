@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import BlogModalForm from "./BlogModalForm";
 import TagModalForm from "./TagModalForm";
 import { getAllTags } from "./tag-actions";

@@ -1,7 +1,8 @@
 import BlogCard from "@/components/BlogCard";
 import { getBlogs } from "@/lib/blog";
+import Link from "next/link";
 import React from "react";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft } from "react-icons/fi";
 
 async function BlogPage() {
   const blogs = await getBlogs();
@@ -28,13 +29,13 @@ async function BlogPage() {
           <div className="text-xl font-semibold mb-4">
             There are no blogs yet...
           </div>
-          <a href="/" className="group flex items-center gap-2">
+          <Link href="/" className="group flex items-center gap-2">
             <FiChevronLeft className="text-2xl transition-transform duration-200 group-hover:-translate-x-2 group-hover:text-emerald-500" />
 
             <h2 className="text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 group-hover:underline-offset-4 transition-all duration-200">
               Go back home
             </h2>
-          </a>
+          </Link>
         </div>
       )}
     </div>
