@@ -16,22 +16,28 @@ async function Blog() {
           </button>
         </Tooltip>
       </div>
+      {blogs.length != 0 ? (
+        <div className="space-y-4">
+          {blogs.map((blog) => (
+            <BlogCard
+              key={blog.id}
+              title={blog.title}
+              url={
+                blog.link.startsWith("http") ? blog.link : `/blogs/${blog.link}`
+              }
+              date={new Date(blog.createdAt)}
+              description={blog.content.slice(0, 100)}
+              tags={blog.tags?.map(({ tag }) => tag) || []}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="pl-4 text-xl font-semibold">
+          There are no blogs yet...
+        </div>
+      )}
 
-      <div className="space-y-4">
-        {blogs.map((blog) => (
-          <BlogCard
-            key={blog.id}
-            title={blog.title}
-            url={
-              blog.link.startsWith("http") ? blog.link : `/blogs/${blog.link}`
-            }
-            date={new Date(blog.createdAt)}
-            description={blog.content.slice(0, 100)}
-            tags={blog.tags?.map(({ tag }) => tag) || []}
-          />
-        ))}
-      </div>
-      <a href="/blog" className="group flex items-center gap-2">
+      <a href="/blogs" className="group flex items-center gap-2">
         <h2 className="pl-4 text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 group-hover:underline-offset-4 transition-all duration-200">
           View All Blogs
         </h2>
