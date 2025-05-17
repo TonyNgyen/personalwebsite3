@@ -28,37 +28,37 @@ export default async function Sidebar() {
       <nav className="flex flex-col space-y-2">
         <Link
           href="/#about"
-          className="hover:text-gray-300 text-md font-semibold tracking-wide"
+          className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
         >
           About
         </Link>
         <Link
           href="/#education"
-          className="hover:text-gray-300 text-md font-semibold tracking-wide"
+          className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
         >
           Education
         </Link>
         <Link
           href="/#experience"
-          className="hover:text-gray-300 text-md font-semibold tracking-wide"
+          className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
         >
           Experience
         </Link>
         <Link
           href="/#projects"
-          className="hover:text-gray-300 text-md font-semibold tracking-wide"
+          className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
         >
           Projects
         </Link>
         <Link
           href="/#notes"
-          className="hover:text-gray-300 text-md font-semibold tracking-wide"
+          className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
         >
           Notes
         </Link>
         <Link
           href="/#blog"
-          className="hover:text-gray-300 text-md font-semibold tracking-wide"
+          className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
         >
           Blog
         </Link>
@@ -68,7 +68,7 @@ export default async function Sidebar() {
           <>
             <Link
               href="/admin"
-              className="hover:text-gray-300 text-md font-semibold tracking-wide"
+              className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
             >
               Admin Dashboard
             </Link>
@@ -83,7 +83,7 @@ export default async function Sidebar() {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-gray-300 text-md font-semibold tracking-wide"
+            className="hover:text-gray-300 text-md font-semibold tracking-wide transition-colors duration-100 ease-in"
           >
             Resume
           </Link>
@@ -91,14 +91,14 @@ export default async function Sidebar() {
           <Link
             href="https://github.com/TonyNgyen"
             target="_blank"
-            className="hover:text-gray-300 text-2xl font-semibold tracking-wide"
+            className="hover:text-gray-300 text-2xl font-semibold tracking-wide transition-colors duration-100 ease-in"
           >
             <FaGithub />
           </Link>
           <Link
             href="https://www.linkedin.com/in/tony-nguyen-813923212/"
             target="_blank"
-            className="hover:text-gray-300 text-2xl font-semibold tracking-wide"
+            className="hover:text-gray-300 text-2xl font-semibold tracking-wide transition-colors duration-100 ease-in"
           >
             <FaLinkedin />
           </Link>
