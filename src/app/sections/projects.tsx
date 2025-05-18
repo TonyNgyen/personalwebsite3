@@ -6,7 +6,7 @@ function Projects() {
       <h1 className="text-4xl font-semibold pl-4">Projects</h1>
       <div className="space-y-4">
         <a
-          href="https://cse.ucsd.edu/"
+          href="https://github.com/TonyNgyen/Prep"
           target="_blank"
           rel="noopener noreferrer"
           className="transition flex duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
@@ -46,7 +46,7 @@ function Projects() {
           </div>
         </a>
         <a
-          href="https://cse.ucsd.edu/"
+          href="https://tonedapp.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
           className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
@@ -79,7 +79,7 @@ function Projects() {
           </div>
         </a>
         <a
-          href="https://cse.ucsd.edu/"
+          href="https://tonynguyen-dev.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
           className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
@@ -106,7 +106,7 @@ function Projects() {
           </div>
         </a>
         <a
-          href="https://cse.ucsd.edu/"
+          href="https://devlogsapp.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
           className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
