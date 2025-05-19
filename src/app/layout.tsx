@@ -18,8 +18,8 @@ export default async function RootLayout({
         <Sidebar />
         <main
           className="ml-72 flex-1 py-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-48 2xl:px-96
-          bg-[radial-gradient(#EFEFEF_1px,transparent_2px)]
-          [background-size:40px_40px]"
+          bg-[radial-gradient(#E7E7E7_1px,transparent_2px)]
+          [background-size:40px_40px] bg-[#fbfbfc]"
         >
           {children}
         </main>
