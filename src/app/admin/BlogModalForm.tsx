@@ -151,7 +151,7 @@ export default function BlogModalForm() {
                     title={title}
                     url={link ? `/blogs/${link}` : "#"}
                     date={new Date()}
-                    description={content.slice(0, 100) + "..."}
+                    description={content.slice(0, 100)}
                     tags={tags.filter((tag) => selectedTagIds.includes(tag.id))}
                   />
                 </>
