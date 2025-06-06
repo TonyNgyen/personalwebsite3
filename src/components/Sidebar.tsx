@@ -3,26 +3,24 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-// import ChipCycler from "./ChipCycler";
+import VerticalChipCarousel from "./VerticalChipCarousel";
 
 export default async function Sidebar() {
   const cookieStore = await cookies();
   const isLoggedIn = cookieStore.get("admin-auth")?.value === "true";
-  // const tags = [
-  //   "Test 2",
-  //   "Test 3",
-  //   "Test",
-  //   "Test 4",
-  //   "Test 5",
-  // ];
+
+  const chips = ["Coding", "Making", "Learning", "Lifting", "Exploring"];
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-72 bg-gray-800 text-white flex flex-col p-10 py-24 space-y-4">
+    <aside className="fixed top-0 left-0 h-screen w-72 bg-gray-800 text-white flex flex-col p-10 py-24 space-y-8">
       <div className="">
-        <Link href="/">
-          <h1 className="text-2xl font-bold">Tony</h1>
-        </Link>
-        {/* <ChipCycler items={tags} interval={3000} /> */}
+        <div className="flex items-center gap-2 mb-2">
+          <Link href="/">
+            <h1 className="text-2xl font-bold">Tony</h1>
+          </Link>
+          <VerticalChipCarousel chips={chips} interval={2000} />
+        </div>
+
         <p className="text-gray-300">I build things</p>
       </div>
       <nav className="flex flex-col space-y-2">
