@@ -4,6 +4,7 @@ import Link from "next/link";
 import LogoutButton from "./LogoutButton";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import VerticalChipCarousel from "./VerticalChipCarousel";
+import ThemeSwitch from "./ThemeSwitch";
 
 export default async function Sidebar() {
   const cookieStore = await cookies();
@@ -12,13 +13,13 @@ export default async function Sidebar() {
   const chips = ["Coding", "Making", "Learning", "Lifting", "Exploring"];
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-72 bg-gray-800 text-white flex flex-col p-10 py-24 space-y-8">
+    <aside className="fixed top-0 left-0 h-screen w-72 bg-gray-800 dark:bg-gray-950 text-white flex flex-col p-10 py-24 space-y-8">
       <div className="">
         <div className="flex items-center gap-2 mb-2">
           <Link href="/">
             <h1 className="text-2xl font-bold">Tony</h1>
           </Link>
-          <VerticalChipCarousel chips={chips} interval={2000} />
+          <VerticalChipCarousel chips={chips} interval={3000} />
         </div>
 
         <p className="text-gray-300">I build things</p>
@@ -76,7 +77,7 @@ export default async function Sidebar() {
       </nav>
       <div className="flex-1" />
       <div className="flex flex-col gap-2">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center mb-4">
           <Link
             href="/resume.pdf"
             target="_blank"
@@ -101,6 +102,7 @@ export default async function Sidebar() {
             <FaLinkedin />
           </Link>
         </div>
+        <ThemeSwitch />
       </div>
     </aside>
   );

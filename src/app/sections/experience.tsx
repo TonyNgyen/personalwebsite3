@@ -6,15 +6,17 @@ function Experience() {
       <h1 className="text-4xl font-semibold pl-4">Experience</h1>
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-start gap-4 p-4">
-          <h2 className="text-xl min-w-[10rem] text-gray-500">
+          <h2 className="text-xl min-w-[10rem] text-gray-500 dark:text-gray-200">
             2023 -{" "}
-            <span className="text-emerald-500 font-semibold">Present</span>
+            <span className="text-emerald-500 dark:text-emerald-300 font-semibold">
+              Present
+            </span>
           </h2>
           <div>
             <h2 className="text-xl font-semibold">
               UCSD Computer Science Department
             </h2>
-            <h2 className="text-lg font-semibold mb-2 text-gray-500">
+            <h2 className="text-lg font-semibold mb-2 text-gray-500 dark:text-gray-200">
               Instructional Assistant
             </h2>
             <h3>
@@ -37,10 +39,12 @@ function Experience() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-start gap-4 p-4">
-          <h2 className="text-xl min-w-[10rem] text-gray-500">2024 - 2025</h2>
+          <h2 className="text-xl min-w-[10rem] text-gray-500 dark:text-gray-200">
+            2024 - 2025
+          </h2>
           <div>
             <h2 className="text-xl font-semibold">Choir Power</h2>
-            <h2 className="text-lg font-semibold mb-2 text-gray-500">
+            <h2 className="text-lg font-semibold mb-2 text-gray-500 dark:text-gray-200">
               Software Engineer Intern
             </h2>
             <h3>

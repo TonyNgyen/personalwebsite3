@@ -12,7 +12,7 @@ async function Notes() {
       <div className="flex items-center pl-4">
         <h1 className="text-4xl font-semibold">Notes</h1>
         <Tooltip text="Thoughts and notes — from projects to everyday life and everything else.">
-          <button className="ml-2 flex items-center text-2xl text-emerald-500">
+          <button className="ml-2 flex items-center text-2xl text-emerald-500 dark:text-emerald-300">
             <FiInfo />
           </button>
         </Tooltip>
@@ -39,10 +39,10 @@ async function Notes() {
       )}
 
       <a href="/notes" className="group flex items-center gap-2">
-        <h2 className="pl-4 text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 group-hover:underline-offset-4 transition-all duration-200">
+        <h2 className="pl-4 text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 dark:group-hover:decoration-emerald-300 group-hover:underline-offset-4 transition-all duration-200">
           View All Notes
         </h2>
-        <FiChevronRight className="text-2xl transition-transform duration-200 group-hover:translate-x-2 group-hover:text-emerald-500" />
+        <FiChevronRight className="text-2xl transition-transform duration-200 group-hover:translate-x-2 group-hover:text-emerald-500 dark:group-hover:decoration-emerald-300" />
       </a>
     </div>
   );
