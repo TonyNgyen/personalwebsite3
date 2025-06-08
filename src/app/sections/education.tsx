@@ -9,7 +9,7 @@ function Education() {
           href="https://cse.ucsd.edu/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col transition duration-200 sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
+          className="flex flex-col transition duration-200 sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 dark:hover:bg-gray-800/50 dark:hover:border-gray-800 rounded"
         >
           <h2 className="text-xl min-w-[10rem] text-gray-500 dark:text-gray-200">
             2025 -
@@ -27,7 +27,7 @@ function Education() {
           href="https://cse.ucsd.edu/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col transition duration-200 sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
+          className="flex flex-col transition duration-200 sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 dark:hover:bg-gray-800/50 border-1 border-transparent hover:border hover:border-gray-100 dark:hover:border-gray-800 rounded"
         >
           <h2 className="text-xl min-w-[10rem] text-gray-500 dark:text-gray-200">
             2021 - 2025

@@ -22,7 +22,7 @@ export default async function Sidebar() {
           <VerticalChipCarousel chips={chips} interval={3000} />
         </div>
 
-        <p className="text-gray-300">I build things</p>
+        <p className="text-gray-300 dark:text-gray-200">I build things</p>
       </div>
       <nav className="flex flex-col space-y-2">
         <Link

@@ -9,7 +9,7 @@ function Projects() {
           href="https://github.com/TonyNgyen/Prep"
           target="_blank"
           rel="noopener noreferrer"
-          className="transition flex duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
+          className="transition flex duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded dark:hover:bg-gray-800/50 dark:hover:border-gray-800"
         >
           <div className="min-w-[10rem] flex justify-center">
             <img
@@ -49,7 +49,7 @@ function Projects() {
           href="https://tonedapp.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
+          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded dark:hover:bg-gray-800/50 dark:hover:border-gray-800"
         >
           <img
             src="/images/projects/toned.png"
@@ -82,7 +82,7 @@ function Projects() {
           href="https://tonynguyen-dev.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
+          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded dark:hover:bg-gray-800/50 dark:hover:border-gray-800"
         >
           <img
             src="/images/projects/personal.png"
@@ -109,7 +109,7 @@ function Projects() {
           href="https://devlogsapp.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded"
+          className="transition flex  duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded dark:hover:bg-gray-800/50 dark:hover:border-gray-800"
         >
           <img
             src="/images/projects/devlogs.png"

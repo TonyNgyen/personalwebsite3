@@ -67,7 +67,7 @@ export default function VerticalChipCarousel({
           <div
             key={`${chip}-${i}`}
             // Add w-fit and px-4 here to control chip width and padding
-            className="h-[25px] m-1 flex items-center justify-center bg-gray-700 text-gray-200 rounded-full shadow-sm px-4"
+            className="h-[25px] m-1 flex items-center justify-center bg-gray-700 dark:bg-gray-800 text-gray-200 rounded-full shadow-sm px-4"
             style={{ minHeight: `${CHIP_HEIGHT_PX}px` }}
           >
             {chip}
