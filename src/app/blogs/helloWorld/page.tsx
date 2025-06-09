@@ -6,7 +6,10 @@ import React from "react";
 function Page() {
   return (
     <BlogContainer>
-      <BlogHeader>Hello World!</BlogHeader>
+      <div>
+        <BlogHeader date="May 30, 2025">Hello World!</BlogHeader>
+      </div>
+
       <BlogSection>
         This is the third version of my personal website and my favorite. My
         past two versions felt uninspiring to work on and eventually became
