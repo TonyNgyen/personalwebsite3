@@ -97,7 +97,6 @@ export default function BlogModalForm() {
                 />
               </div>
 
-              {/* Tags selection */}
               <div>
                 <label className="block text-sm font-medium mb-1">Tags</label>
                 <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto border rounded p-2">

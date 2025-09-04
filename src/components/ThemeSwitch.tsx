@@ -43,7 +43,6 @@ const ThemeSwitch = () => {
         ))}
       </select>
 
-      {/* Current Icon Overlay (non-interactive) */}
       <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-400">
         {options.find((opt) => opt.value === theme)?.icon}
       </div>
