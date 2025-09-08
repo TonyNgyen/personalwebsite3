@@ -24,6 +24,7 @@ const ThemeSwitch = () => {
       icon: <FiMonitor className="w-4 h-4 mr-2" />,
     },
   ];
+  // Working
   return (
     <div className="relative w-fit">
       <select
