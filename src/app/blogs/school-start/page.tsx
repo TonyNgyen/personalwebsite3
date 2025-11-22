@@ -26,7 +26,7 @@ function Page() {
         Next is the startup with my friends. We got a good amount of work done,
         but nothing like an MVP I&lsquo;d say. It was a learning experience for
         all of us, and it eventually fell through when we all got busier with
-        other parts of our lives and couldn't dedicate more time to it. Looking
+        other parts of our lives and couldn&lsquo;t dedicate more time to it. Looking
         back, there are a lot of things I would&lsquo;ve done differently which
         I&lsquo;ll take as lessons moving forward.
       </BlogSection>
