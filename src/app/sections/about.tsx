@@ -9,19 +9,19 @@ function About() {
       <h2 className="text-xl tracking-wide leading-9">
         I&apos;m a Full-Stack Developer focused on building clean, scalable web
         & mobile apps. I specialize in React, React Native, Next.js, Supabase,
-        and modern UI design with Tailwind & NativeWind — creating seamless
-        experiences across platforms with performance in mind.
+        and modern UI design with Tailwind in order to create seamless
+        experiences across different platforms.
       </h2>
       <h2 className="text-xl tracking-wide leading-9">
         Currently, I&apos;m a Master&apos;s student at UCSD studying computer
-        science, and building apps that solve everyday problems and make life
-        more convenient. Right now, my focus is on helping people live healthier
-        lives through fitness and meal tracking with{" "}
-        <span className="font-bold">Toned</span> and
-        <span className="font-bold"> Prep</span>.
+        science, and building apps that make life
+        a little easier. Right now, my focus is on helping people live healthier
+        lives through meal tracking and fitness with{" "}
+        <span className="font-bold">Alimon</span> and
+        <span className="font-bold"> Toned</span>.
       </h2>
       <h2 className="text-xl tracking-wide leading-9">
-        When I&apos;m not coding, I enjoy weight-lifting, learning woodworking
+        When I&apos;m not coding, I enjoy weight-lifting, reading
         and spending time with my friends and family.
       </h2>
     </div>
