@@ -6,25 +6,26 @@ function Projects() {
       <h1 className="text-4xl font-semibold pl-4">Projects</h1>
       <div className="space-y-4">
         <a
-          href="https://github.com/TonyNgyen/Prep"
+          href="https://meapprep.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
           className="transition flex duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 rounded dark:hover:bg-gray-800/50 dark:hover:border-gray-800"
         >
           <div className="min-w-[10rem] flex justify-center">
             <img
-              src="/images/projects/prep.png"
-              className="h-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
+              src="/images/projects/meap.png"
+              className="w-[10rem] bg-gray-500 rounded transition sm:translate-y-1 border-2 border-gray-200"
               alt="Screenshot of Prep app"
             />
           </div>
           <div className="">
-            <h2 className="text-xl font-semibold">Prep</h2>
+            <h2 className="text-xl font-semibold">meap</h2>
             <h3>
-              A web and mobile app for managing your meals, ingredients, and
-              goals. Add and organize ingredients with nutrition info, track
-              your inventory, log meals and weight, and view nutrition history.
-              Set personalized goals and monitor your progress over time.
+              A web app for managing your meals, ingredients, and goals. Add and
+              organize ingredients with nutrition info, track your inventory,
+              log meals and weight, and view nutrition history. Set personalized
+              goals and monitor your progress over time. There is a prototype
+              mobile app as well called Prep.
             </h3>
             <div className="flex gap-[6px] mt-3">
               <div className="rounded-full bg-cyan-100 px-3 py-0">

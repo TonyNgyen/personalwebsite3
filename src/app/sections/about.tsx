@@ -14,15 +14,17 @@ function About() {
       </h2>
       <h2 className="text-xl tracking-wide leading-9">
         Currently, I&apos;m a Master&apos;s student at UCSD studying computer
-        science, and building apps that make life
-        a little easier. Right now, my focus is on helping people live healthier
-        lives through meal tracking and fitness with{" "}
-        <span className="font-bold">Alimon</span> and
-        <span className="font-bold"> Toned</span>.
+        science, and building apps that make life a little easier. Right now, my
+        focus is on helping people live healthier lives through meal tracking
+        and fitness with{" "}
+        <a href="https://meapprep.vercel.app/" target="_blank" className="font-bold underline">
+          meap
+        </a>
+        .
       </h2>
       <h2 className="text-xl tracking-wide leading-9">
-        When I&apos;m not coding, I enjoy weight-lifting, reading
-        and spending time with my friends and family.
+        When I&apos;m not coding, I enjoy weight-lifting, reading and spending
+        time with my friends and family.
       </h2>
     </div>
   );
