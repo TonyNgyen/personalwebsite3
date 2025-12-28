@@ -1,11 +1,12 @@
 import React from "react";
 import { Tooltip } from "../../components/Tooltip";
 import { FiChevronRight, FiInfo } from "react-icons/fi";
-import { getBlogs } from "@/lib/blog";
 import BlogCard from "@/components/BlogCard";
+import { getPublishedBlogs } from "../admin/blog-creator/blog-actions";
 
 async function Blog() {
-  const blogs = await getBlogs();
+  const blogs = await getPublishedBlogs();
+
   return (
     <div className="space-y-4 tracking-wide -ml-4">
       <div className="flex items-center pl-4">
@@ -16,18 +17,16 @@ async function Blog() {
           </button>
         </Tooltip>
       </div>
-      {blogs.length != 0 ? (
+      {blogs.length !== 0 ? (
         <div className="space-y-4">
           {blogs.map((blog) => (
             <BlogCard
               key={blog.id}
               title={blog.title}
-              url={
-                blog.link.startsWith("http") ? blog.link : `/blogs/${blog.link}`
-              }
+              url={`/blogs/${blog.link}`}
               date={new Date(blog.createdAt)}
-              description={blog.content.slice(0, 100)}
-              tags={blog.tags?.map(({ tag }) => tag) || []}
+              description={blog.description}
+              tags={blog.tags || []}
             />
           ))}
         </div>

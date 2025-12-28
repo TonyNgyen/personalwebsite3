@@ -1,45 +1,24 @@
 import BlogCard from "@/components/BlogCard";
-import { getBlogs } from "@/lib/blog";
-import Link from "next/link";
-import React from "react";
-import { FiChevronLeft } from "react-icons/fi";
+import { getPublishedBlogs } from "../admin/blog-creator/blog-actions";
 
-async function BlogPage() {
-  const blogs = await getBlogs();
+export default async function BlogsPage() {
+  const blogs = await getPublishedBlogs();
+
   return (
-    <div className="space-y-4 tracking-wide -ml-4">
-      <h1 className="text-4xl font-semibold pl-4">All Blogs</h1>
-      {blogs.length != 0 ? (
-        <div className="space-y-4">
-          {blogs.map((blog) => (
-            <BlogCard
-              key={blog.id}
-              title={blog.title}
-              url={
-                blog.link.startsWith("http") ? blog.link : `/blogs/${blog.link}`
-              }
-              date={new Date(blog.createdAt)}
-              description={blog.content.slice(0, 100)}
-              tags={blog.tags?.map(({ tag }) => tag) || []}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="pl-4">
-          <div className="text-xl font-semibold mb-4">
-            There are no blogs yet...
-          </div>
-          <Link href="/" className="group flex items-center gap-2">
-            <FiChevronLeft className="text-2xl transition-transform duration-200 group-hover:-translate-x-2 group-hover:text-emerald-500" />
-
-            <h2 className="text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 group-hover:underline-offset-4 transition-all duration-200">
-              Go back home
-            </h2>
-          </Link>
-        </div>
-      )}
+    <div className="p-10">
+      <h1 className="text-4xl font-bold mb-8">All Blogs</h1>
+      <div className="flex flex-col gap-4">
+        {blogs.map((blog) => (
+          <BlogCard
+            key={blog.id}
+            title={blog.title}
+            url={`/blogs/${blog.link}`}
+            date={new Date(blog.createdAt)}
+            description={blog.description}
+            tags={blog.tags || []}
+          />
+        ))}
+      </div>
     </div>
   );
 }
-
-export default BlogPage;

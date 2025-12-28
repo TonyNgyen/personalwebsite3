@@ -16,39 +16,42 @@ datasource db {
 }
 
 model Blog {
-  id        Int        @id @default(autoincrement())
-  title     String
-  link      String     @unique
-  content   String
-  createdAt DateTime   @default(now())
-  tags      BlogTag[]  // relation to join table
+  id          Int           @id @default(autoincrement())
+  title       String
+  link        String        @unique
+  description String
+  isPublished Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt @default(now()) // Add this temporarily
+  tags        BlogTag[]
+  sections    BlogContent[]
 }
 
 model Note {
-  id        Int        @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   title     String
-  link      String     @unique
+  link      String    @unique
   content   String
-  createdAt DateTime   @default(now())
-  tags      NoteTag[]  // relation to join table
+  createdAt DateTime  @default(now())
+  tags      NoteTag[] // relation to join table
 }
 
 model Tag {
-  id          Int      @id @default(autoincrement())
-  label       String   @unique
-  emoji       String?
-  bgColor     String 
-  textColor String 
-  blogs       BlogTag[]
-  notes       NoteTag[]
+  id        Int       @id @default(autoincrement())
+  label     String    @unique
+  emoji     String?
+  bgColor   String
+  textColor String
+  blogs     BlogTag[]
+  notes     NoteTag[]
 }
 
 // Join table for Blog <-> Tag many-to-many
 model BlogTag {
   blogId Int
   tagId  Int
-  blog   Blog @relation(fields: [blogId], references: [id])
-  tag    Tag  @relation(fields: [tagId], references: [id])
+  blog   Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([blogId, tagId]) // composite primary key
 }
@@ -57,8 +60,19 @@ model BlogTag {
 model NoteTag {
   noteId Int
   tagId  Int
-  note   Note @relation(fields: [noteId], references: [id])
-  tag    Tag  @relation(fields: [tagId], references: [id])
+  note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@id([noteId, tagId]) // composite primary key
+}
+
+model BlogContent {
+  id        Int    @id @default(autoincrement())
+  blogId    Int
+  content   String @db.Text // Using Text for potentially long content
+  sortOrder Int
+  type      String // "text" or "image"
+  blog      Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
+
+  @@index([blogId, sortOrder]) // Index for faster queries when fetching sections in order
 }

@@ -2,13 +2,14 @@ import BlogModalForm from "./BlogModalForm";
 import TagModalForm from "./TagModalForm";
 import { getAllTags } from "./tag-actions";
 import { Tag } from "@/components/Tag";
-import BlogCard from "@/components/BlogCard"; // adjust path
-import { getBlogs } from "./blog-actions";
+import BlogCard from "@/components/BlogCard";
 import NoteModalForm from "./NoteModalForm";
 import { getNotes } from "./note-actions";
+import { getAllBlogs } from "./blog-creator/blog-actions";
+import BlogAdminCard from "@/components/BlogAdminCard";
 
 export default async function AdminPage() {
-  const blogs = await getBlogs();
+  const blogs = await getAllBlogs(); // This gets ALL blogs including drafts
   const notes = await getNotes();
   const tags = await getAllTags();
 
@@ -19,21 +20,24 @@ export default async function AdminPage() {
         <BlogModalForm />
         <NoteModalForm />
         <TagModalForm />
+        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          <a href="/admin/blog-creator">Create Blog</a>
+        </button>
       </div>
 
       <div className="mt-10">
         <h2 className="text-2xl font-semibold mb-4">All Notes</h2>
         <div className="flex flex-col gap-4">
-          {notes.map((blog) => (
+          {notes.map((note) => (
             <BlogCard
-              key={blog.id}
-              title={blog.title}
+              key={note.id}
+              title={note.title}
               url={
-                blog.link.startsWith("http") ? blog.link : `/blogs/${blog.link}`
+                note.link.startsWith("http") ? note.link : `/notes/${note.link}`
               }
-              date={new Date(blog.createdAt)}
-              description={blog.content.slice(0, 100)}
-              tags={blog.tags?.map(({ tag }) => tag) || []}
+              date={new Date(note.createdAt)}
+              description=""
+              tags={note.tags?.map(({ tag }) => tag) || []}
             />
           ))}
         </div>
@@ -43,16 +47,7 @@ export default async function AdminPage() {
         <h2 className="text-2xl font-semibold mb-4">All Blogs</h2>
         <div className="flex flex-col gap-4">
           {blogs.map((blog) => (
-            <BlogCard
-              key={blog.id}
-              title={blog.title}
-              url={
-                blog.link.startsWith("http") ? blog.link : `/blogs/${blog.link}`
-              }
-              date={new Date(blog.createdAt)}
-              description={blog.content.slice(0, 100)}
-              tags={blog.tags?.map(({ tag }) => tag) || []}
-            />
+            <BlogAdminCard key={blog.id} blog={blog} />
           ))}
         </div>
       </div>
