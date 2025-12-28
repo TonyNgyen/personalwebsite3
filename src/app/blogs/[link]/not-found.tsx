@@ -10,7 +10,7 @@ export default function NotFound() {
         Blog Not Found
       </h2>
       <p className="text-gray-600 dark:text-gray-400 mb-8 text-center max-w-md">
-        Sorry, the blog post you're looking for doesn't exist or hasn't been
+        Sorry, the blog post you&apos;re looking for doesn&apos;t exist or hasn&apos;t been
         published yet.
       </p>
       <Link

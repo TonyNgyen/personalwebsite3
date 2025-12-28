@@ -16,11 +16,11 @@ function BlogCreatorPage() {
   const editId = searchParams.get("edit");
 
   const [isLoadingBlog, setIsLoadingBlog] = React.useState(!!editId);
-  const [blogId, setBlogId] = React.useState<number | undefined>(
+  const [blogId] = React.useState<number | undefined>(
     editId ? parseInt(editId) : undefined
   );
   const [blogTitle, setBlogTitle] = React.useState("");
-  const [blogDate, setBlogDate] = React.useState("");
+  const [blogDate] = React.useState("");
   const [blogLink, setBlogLink] = React.useState("");
   const [blogDescription, setBlogDescription] = React.useState("");
   const [isSaving, setIsSaving] = React.useState(false);

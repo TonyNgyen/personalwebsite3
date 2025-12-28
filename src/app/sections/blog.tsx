@@ -3,6 +3,7 @@ import { Tooltip } from "../../components/Tooltip";
 import { FiChevronRight, FiInfo } from "react-icons/fi";
 import BlogCard from "@/components/BlogCard";
 import { getPublishedBlogs } from "../admin/blog-creator/blog-actions";
+import Link from "next/link";
 
 async function Blog() {
   const blogs = await getPublishedBlogs();
@@ -36,12 +37,12 @@ async function Blog() {
         </div>
       )}
 
-      <a href="/blogs" className="group flex items-center gap-2">
+      <Link href="/blogs" className="group flex items-center gap-2">
         <h2 className="pl-4 text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 dark:group-hover:decoration-emerald-300 group-hover:underline-offset-4 transition-all duration-200">
           View All Blogs
         </h2>
         <FiChevronRight className="text-2xl transition-transform duration-200 group-hover:translate-x-2 group-hover:text-emerald-500 dark:group-hover:text-emerald-300" />
-      </a>
+      </Link>
     </div>
   );
 }

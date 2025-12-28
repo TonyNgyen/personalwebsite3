@@ -10,7 +10,7 @@ export default function GlobalNotFound() {
         Page Not Found
       </h2>
       <p className="text-gray-600 dark:text-gray-400 mb-8 text-center max-w-md">
-        Oops! The page you're looking for doesn't exist.
+        Oops! The page you&apos;re looking for doesn&apos;t exist.
       </p>
       <Link
         href="/"

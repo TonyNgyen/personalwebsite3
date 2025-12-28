@@ -5,11 +5,11 @@ import BlogSection from "@/components/BlogComponents/BlogSection";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: { link: string };
+  params: Promise<{ link: string }>;
 };
 
 export default async function BlogPage({ params }: Props) {
-  const { link } = params;
+  const { link } = await params;
   const blog = await getBlogByLink(link);
 
   // If blog doesn't exist or is not published, show 404
@@ -65,7 +65,7 @@ export async function generateStaticParams() {
 
 // Optional: Generate metadata for SEO
 export async function generateMetadata({ params }: Props) {
-  const { link } = params;
+  const { link } = await params;
   const blog = await getBlogByLink(link);
 
   if (!blog) {

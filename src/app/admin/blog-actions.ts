@@ -6,35 +6,41 @@ import { revalidatePath } from "next/cache";
 export async function createBlogPost(formData: FormData) {
   const title = formData.get("title") as string;
   const link = formData.get("link") as string;
-  const content = formData.get("content") as string;
-  // tags will come as a comma-separated string or multiple entries, let's normalize:
-  const tags = formData.getAll("tags") as string[]; // getAll to support multiple selections
+  const description = formData.get("description") as string;
+  const content = formData.get("content") as string; // initial text section
+  const tags = formData.getAll("tags") as string[];
 
-  if (!title || !link || !content) {
+  if (!title || !link || !description || !content) {
     throw new Error("All fields required.");
   }
 
-  // Convert tag IDs from string to number and filter out invalid entries
   const tagIds = tags
-    .map((id) => Number(id))
-    .filter((id) => !isNaN(id) && id > 0);
+    .map(Number)
+    .filter((id) => Number.isInteger(id) && id > 0);
 
   await prisma.blog.create({
     data: {
       title,
       link,
-      content,
+      description,
       tags: {
         create: tagIds.map((tagId) => ({
-          tag: {
-            connect: { id: tagId },
-          },
+          tag: { connect: { id: tagId } },
         })),
+      },
+      sections: {
+        create: [
+          {
+            content,
+            type: "text",
+            sortOrder: 0,
+          },
+        ],
       },
     },
   });
 
-  revalidatePath("/"); // Revalidate homepage or blog list if needed
+  revalidatePath("/");
 }
 
 export async function getBlogs() {
