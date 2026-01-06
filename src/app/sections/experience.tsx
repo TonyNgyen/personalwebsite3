@@ -22,17 +22,20 @@ function Experience() {
             <h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li className="pl-1">
-                  Instructional Assistant for Software Engineering, Design &
-                  Analysis of Algorithms, and Theory of Computation courses.
+                  Design and lead weekly labs for Software Engineering course
+                  (200 students), creating labs and tutorials in Java
                 </li>
                 <li className="pl-1">
-                  Collaborated with the instructional team to elevate the
-                  quality of education delivered to students within the
-                  university&apos;s computer science department.
+                  Develop materials including practice problems and debugging
+                  guides used by 700+ students across multiple courses
                 </li>
                 <li className="pl-1">
-                  Held regular office hours, providing a supportive environment
-                  for students
+                  Conduct office hours for Software Engineering, Algorithms,
+                  Python Programming, and Theory of Computation
+                </li>
+                <li className="pl-1">
+                  Mentor student teams on software design patterns, OOP
+                  principles, and full-stack project development
                 </li>
               </ul>
             </h3>
@@ -50,18 +53,27 @@ function Experience() {
             <h3>
               <ul className="list-disc pl-5 space-y-1">
                 <li className="pl-1">
-                  Developed a dashboard containing graphs using React, HTML, and
-                  CSS.
+                  Built a comprehensive React dashboard for B2B clients to
+                  visualize and analyze historical electricity usage patterns,
+                  detailed cost analysis metrics, and ML-driven predictive
+                  consumption forecasts
                 </li>
                 <li className="pl-1">
-                  Identified and removed unnecessary features, leading to a
-                  user-friendly UI/UX.
+                  Integrated AWS cloud services (Lambda, API Gateway, S3) to
+                  deliver real-time smart meter data updates to the dashboard
+                  interface, improving API response time by 30%
                 </li>
                 <li className="pl-1">
-                  Integrated an existing AWS API with dashboard to provide
-                  real-time updates to dashboard for users. Collaborated with
-                  backend engineer to optimize AWS API calls and return only
-                  necessary data.
+                  Optimized frontend performance through code refactoring, lazy
+                  loading, and component optimization, reducing dashboard load
+                  time by 40% and enhancing user experience for 5 enterprise
+                  clients
+                </li>
+                <li className="pl-1">
+                  Participated in Agile development cycles including daily
+                  standups, bi-weekly sprint planning sessions, and
+                  collaborative code reviews with cross-functional engineering
+                  team
                 </li>
               </ul>
             </h3>
