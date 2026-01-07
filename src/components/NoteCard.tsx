@@ -31,7 +31,7 @@ function NoteCard({ note }: { note: Note }) {
       <div
         onClick={() => setIsOpen(true)}
         className="group cursor-pointer p-5 transition-all duration-200 
-             hover:bg-gray-200/60 bg-gray-100/75 border-1 hover:border hover:border-gray-100 border-gray-200/60 rounded-md dark:hover:bg-gray-800 dark:hover:border-gray-800 dark:bg-gray-800/70 dark:border-gray-800"
+             hover:bg-gray-200/60 bg-gray-100/80 border-1 hover:border hover:border-gray-100 border-gray-200/60 rounded-md dark:hover:bg-gray-800 dark:hover:border-gray-800 dark:bg-gray-800/70 dark:border-gray-800"
       >
         {/* Header: Date + Optional Icon */}
         <div className="flex justify-between items-start mb-3">
