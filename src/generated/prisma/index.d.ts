@@ -60,7 +60,7 @@ export type BlogContent = $Result.DefaultSelection<Prisma.$BlogContentPayload>
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
@@ -92,6 +92,13 @@ export class PrismaClient<
    * Disconnect from the database
    */
   $disconnect(): $Utils.JsPromise<void>;
+
+  /**
+   * Add a middleware
+   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
+   * @see https://pris.ly/d/extensions
+   */
+  $use(cb: Prisma.Middleware): void
 
 /**
    * Executes a prepared raw query and returns the number of affected rows.
@@ -279,8 +286,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.19.1
-   * Query Engine version: c2990dca591cba766e3b7ef5d9e8a84796e47ab7
+   * Prisma Client JS version: 6.8.1
+   * Query Engine version: 2060c79ba17c6bb9f5823312b6f6b7f4a845738e
    */
   export type PrismaVersion = {
     client: string
@@ -293,7 +300,6 @@ export namespace Prisma {
    */
 
 
-  export import Bytes = runtime.Bytes
   export import JsonObject = runtime.JsonObject
   export import JsonArray = runtime.JsonArray
   export import JsonValue = runtime.JsonValue
@@ -1177,24 +1183,16 @@ export namespace Prisma {
     /**
      * @example
      * ```
-     * // Shorthand for `emit: 'stdout'`
+     * // Defaults to stdout
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events only
+     * // Emit as events
      * log: [
-     *   { emit: 'event', level: 'query' },
-     *   { emit: 'event', level: 'info' },
-     *   { emit: 'event', level: 'warn' }
-     *   { emit: 'event', level: 'error' }
+     *   { emit: 'stdout', level: 'query' },
+     *   { emit: 'stdout', level: 'info' },
+     *   { emit: 'stdout', level: 'warn' }
+     *   { emit: 'stdout', level: 'error' }
      * ]
-     * 
-     * / Emit as events and log to stdout
-     * og: [
-     *  { emit: 'stdout', level: 'query' },
-     *  { emit: 'stdout', level: 'info' },
-     *  { emit: 'stdout', level: 'warn' }
-     *  { emit: 'stdout', level: 'error' }
-     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -1209,10 +1207,6 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
-    /**
-     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
-     */
-    adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -1245,15 +1239,10 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
-
-  export type GetLogType<T> = CheckIsLogLevel<
-    T extends LogDefinition ? T['level'] : T
-  >;
-
-  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
-    ? GetLogType<T[number]>
-    : never;
+  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
+  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
+    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
+    : never
 
   export type QueryEvent = {
     timestamp: Date
@@ -1294,6 +1283,25 @@ export namespace Prisma {
     | 'findRaw'
     | 'groupBy'
 
+  /**
+   * These options are being passed into the middleware as "params"
+   */
+  export type MiddlewareParams = {
+    model?: ModelName
+    action: PrismaAction
+    args: any
+    dataPath: string[]
+    runInTransaction: boolean
+  }
+
+  /**
+   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
+   */
+  export type Middleware<T = any> = (
+    params: MiddlewareParams,
+    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
+  ) => $Utils.JsPromise<T>
+
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
 
@@ -1316,13 +1324,13 @@ export namespace Prisma {
    */
 
   export type BlogCountOutputType = {
-    tags: number
     sections: number
+    tags: number
   }
 
   export type BlogCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tags?: boolean | BlogCountOutputTypeCountTagsArgs
     sections?: boolean | BlogCountOutputTypeCountSectionsArgs
+    tags?: boolean | BlogCountOutputTypeCountTagsArgs
   }
 
   // Custom InputTypes
@@ -1339,15 +1347,15 @@ export namespace Prisma {
   /**
    * BlogCountOutputType without action
    */
-  export type BlogCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BlogTagWhereInput
+  export type BlogCountOutputTypeCountSectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BlogContentWhereInput
   }
 
   /**
    * BlogCountOutputType without action
    */
-  export type BlogCountOutputTypeCountSectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BlogContentWhereInput
+  export type BlogCountOutputTypeCountTagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BlogTagWhereInput
   }
 
 
@@ -1450,9 +1458,9 @@ export namespace Prisma {
     id: number | null
     title: string | null
     link: string | null
+    createdAt: Date | null
     description: string | null
     isPublished: boolean | null
-    createdAt: Date | null
     updatedAt: Date | null
   }
 
@@ -1460,9 +1468,9 @@ export namespace Prisma {
     id: number | null
     title: string | null
     link: string | null
+    createdAt: Date | null
     description: string | null
     isPublished: boolean | null
-    createdAt: Date | null
     updatedAt: Date | null
   }
 
@@ -1470,9 +1478,9 @@ export namespace Prisma {
     id: number
     title: number
     link: number
+    createdAt: number
     description: number
     isPublished: number
-    createdAt: number
     updatedAt: number
     _all: number
   }
@@ -1490,9 +1498,9 @@ export namespace Prisma {
     id?: true
     title?: true
     link?: true
+    createdAt?: true
     description?: true
     isPublished?: true
-    createdAt?: true
     updatedAt?: true
   }
 
@@ -1500,9 +1508,9 @@ export namespace Prisma {
     id?: true
     title?: true
     link?: true
+    createdAt?: true
     description?: true
     isPublished?: true
-    createdAt?: true
     updatedAt?: true
   }
 
@@ -1510,9 +1518,9 @@ export namespace Prisma {
     id?: true
     title?: true
     link?: true
+    createdAt?: true
     description?: true
     isPublished?: true
-    createdAt?: true
     updatedAt?: true
     _all?: true
   }
@@ -1607,9 +1615,9 @@ export namespace Prisma {
     id: number
     title: string
     link: string
+    createdAt: Date
     description: string
     isPublished: boolean
-    createdAt: Date
     updatedAt: Date
     _count: BlogCountAggregateOutputType | null
     _avg: BlogAvgAggregateOutputType | null
@@ -1636,12 +1644,12 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     link?: boolean
+    createdAt?: boolean
     description?: boolean
     isPublished?: boolean
-    createdAt?: boolean
     updatedAt?: boolean
-    tags?: boolean | Blog$tagsArgs<ExtArgs>
     sections?: boolean | Blog$sectionsArgs<ExtArgs>
+    tags?: boolean | Blog$tagsArgs<ExtArgs>
     _count?: boolean | BlogCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["blog"]>
 
@@ -1649,9 +1657,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     link?: boolean
+    createdAt?: boolean
     description?: boolean
     isPublished?: boolean
-    createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["blog"]>
 
@@ -1659,9 +1667,9 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     link?: boolean
+    createdAt?: boolean
     description?: boolean
     isPublished?: boolean
-    createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["blog"]>
 
@@ -1669,16 +1677,16 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     link?: boolean
+    createdAt?: boolean
     description?: boolean
     isPublished?: boolean
-    createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type BlogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "link" | "description" | "isPublished" | "createdAt" | "updatedAt", ExtArgs["result"]["blog"]>
+  export type BlogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "link" | "createdAt" | "description" | "isPublished" | "updatedAt", ExtArgs["result"]["blog"]>
   export type BlogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tags?: boolean | Blog$tagsArgs<ExtArgs>
     sections?: boolean | Blog$sectionsArgs<ExtArgs>
+    tags?: boolean | Blog$tagsArgs<ExtArgs>
     _count?: boolean | BlogCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BlogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1687,16 +1695,16 @@ export namespace Prisma {
   export type $BlogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Blog"
     objects: {
-      tags: Prisma.$BlogTagPayload<ExtArgs>[]
       sections: Prisma.$BlogContentPayload<ExtArgs>[]
+      tags: Prisma.$BlogTagPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       title: string
       link: string
+      createdAt: Date
       description: string
       isPublished: boolean
-      createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["blog"]>
     composites: {}
@@ -2092,8 +2100,8 @@ export namespace Prisma {
    */
   export interface Prisma__BlogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    tags<T extends Blog$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Blog$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sections<T extends Blog$sectionsArgs<ExtArgs> = {}>(args?: Subset<T, Blog$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogContentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tags<T extends Blog$tagsArgs<ExtArgs> = {}>(args?: Subset<T, Blog$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlogTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2126,9 +2134,9 @@ export namespace Prisma {
     readonly id: FieldRef<"Blog", 'Int'>
     readonly title: FieldRef<"Blog", 'String'>
     readonly link: FieldRef<"Blog", 'String'>
+    readonly createdAt: FieldRef<"Blog", 'DateTime'>
     readonly description: FieldRef<"Blog", 'String'>
     readonly isPublished: FieldRef<"Blog", 'Boolean'>
-    readonly createdAt: FieldRef<"Blog", 'DateTime'>
     readonly updatedAt: FieldRef<"Blog", 'DateTime'>
   }
     
@@ -2518,30 +2526,6 @@ export namespace Prisma {
   }
 
   /**
-   * Blog.tags
-   */
-  export type Blog$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BlogTag
-     */
-    select?: BlogTagSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BlogTag
-     */
-    omit?: BlogTagOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BlogTagInclude<ExtArgs> | null
-    where?: BlogTagWhereInput
-    orderBy?: BlogTagOrderByWithRelationInput | BlogTagOrderByWithRelationInput[]
-    cursor?: BlogTagWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: BlogTagScalarFieldEnum | BlogTagScalarFieldEnum[]
-  }
-
-  /**
    * Blog.sections
    */
   export type Blog$sectionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2563,6 +2547,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BlogContentScalarFieldEnum | BlogContentScalarFieldEnum[]
+  }
+
+  /**
+   * Blog.tags
+   */
+  export type Blog$tagsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BlogTag
+     */
+    select?: BlogTagSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BlogTag
+     */
+    omit?: BlogTagOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BlogTagInclude<ExtArgs> | null
+    where?: BlogTagWhereInput
+    orderBy?: BlogTagOrderByWithRelationInput | BlogTagOrderByWithRelationInput[]
+    cursor?: BlogTagWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BlogTagScalarFieldEnum | BlogTagScalarFieldEnum[]
   }
 
   /**
@@ -2606,24 +2614,18 @@ export namespace Prisma {
 
   export type NoteMinAggregateOutputType = {
     id: number | null
-    title: string | null
-    link: string | null
     content: string | null
     createdAt: Date | null
   }
 
   export type NoteMaxAggregateOutputType = {
     id: number | null
-    title: string | null
-    link: string | null
     content: string | null
     createdAt: Date | null
   }
 
   export type NoteCountAggregateOutputType = {
     id: number
-    title: number
-    link: number
     content: number
     createdAt: number
     _all: number
@@ -2640,24 +2642,18 @@ export namespace Prisma {
 
   export type NoteMinAggregateInputType = {
     id?: true
-    title?: true
-    link?: true
     content?: true
     createdAt?: true
   }
 
   export type NoteMaxAggregateInputType = {
     id?: true
-    title?: true
-    link?: true
     content?: true
     createdAt?: true
   }
 
   export type NoteCountAggregateInputType = {
     id?: true
-    title?: true
-    link?: true
     content?: true
     createdAt?: true
     _all?: true
@@ -2751,8 +2747,6 @@ export namespace Prisma {
 
   export type NoteGroupByOutputType = {
     id: number
-    title: string
-    link: string
     content: string
     createdAt: Date
     _count: NoteCountAggregateOutputType | null
@@ -2778,8 +2772,6 @@ export namespace Prisma {
 
   export type NoteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    title?: boolean
-    link?: boolean
     content?: boolean
     createdAt?: boolean
     tags?: boolean | Note$tagsArgs<ExtArgs>
@@ -2788,29 +2780,23 @@ export namespace Prisma {
 
   export type NoteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    title?: boolean
-    link?: boolean
     content?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["note"]>
 
   export type NoteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    title?: boolean
-    link?: boolean
     content?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["note"]>
 
   export type NoteSelectScalar = {
     id?: boolean
-    title?: boolean
-    link?: boolean
     content?: boolean
     createdAt?: boolean
   }
 
-  export type NoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "link" | "content" | "createdAt", ExtArgs["result"]["note"]>
+  export type NoteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt", ExtArgs["result"]["note"]>
   export type NoteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     tags?: boolean | Note$tagsArgs<ExtArgs>
     _count?: boolean | NoteCountOutputTypeDefaultArgs<ExtArgs>
@@ -2825,8 +2811,6 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      title: string
-      link: string
       content: string
       createdAt: Date
     }, ExtArgs["result"]["note"]>
@@ -3254,8 +3238,6 @@ export namespace Prisma {
    */
   interface NoteFieldRefs {
     readonly id: FieldRef<"Note", 'Int'>
-    readonly title: FieldRef<"Note", 'String'>
-    readonly link: FieldRef<"Note", 'String'>
     readonly content: FieldRef<"Note", 'String'>
     readonly createdAt: FieldRef<"Note", 'DateTime'>
   }
@@ -8068,9 +8050,9 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     link: 'link',
+    createdAt: 'createdAt',
     description: 'description',
     isPublished: 'isPublished',
-    createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
@@ -8079,8 +8061,6 @@ export namespace Prisma {
 
   export const NoteScalarFieldEnum: {
     id: 'id',
-    title: 'title',
-    link: 'link',
     content: 'content',
     createdAt: 'createdAt'
   };
@@ -8184,13 +8164,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -8201,6 +8174,13 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -8228,24 +8208,24 @@ export namespace Prisma {
     id?: IntFilter<"Blog"> | number
     title?: StringFilter<"Blog"> | string
     link?: StringFilter<"Blog"> | string
+    createdAt?: DateTimeFilter<"Blog"> | Date | string
     description?: StringFilter<"Blog"> | string
     isPublished?: BoolFilter<"Blog"> | boolean
-    createdAt?: DateTimeFilter<"Blog"> | Date | string
     updatedAt?: DateTimeFilter<"Blog"> | Date | string
-    tags?: BlogTagListRelationFilter
     sections?: BlogContentListRelationFilter
+    tags?: BlogTagListRelationFilter
   }
 
   export type BlogOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
     description?: SortOrder
     isPublished?: SortOrder
-    createdAt?: SortOrder
     updatedAt?: SortOrder
-    tags?: BlogTagOrderByRelationAggregateInput
     sections?: BlogContentOrderByRelationAggregateInput
+    tags?: BlogTagOrderByRelationAggregateInput
   }
 
   export type BlogWhereUniqueInput = Prisma.AtLeast<{
@@ -8255,21 +8235,21 @@ export namespace Prisma {
     OR?: BlogWhereInput[]
     NOT?: BlogWhereInput | BlogWhereInput[]
     title?: StringFilter<"Blog"> | string
+    createdAt?: DateTimeFilter<"Blog"> | Date | string
     description?: StringFilter<"Blog"> | string
     isPublished?: BoolFilter<"Blog"> | boolean
-    createdAt?: DateTimeFilter<"Blog"> | Date | string
     updatedAt?: DateTimeFilter<"Blog"> | Date | string
-    tags?: BlogTagListRelationFilter
     sections?: BlogContentListRelationFilter
+    tags?: BlogTagListRelationFilter
   }, "id" | "link">
 
   export type BlogOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
     description?: SortOrder
     isPublished?: SortOrder
-    createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BlogCountOrderByAggregateInput
     _avg?: BlogAvgOrderByAggregateInput
@@ -8285,9 +8265,9 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Blog"> | number
     title?: StringWithAggregatesFilter<"Blog"> | string
     link?: StringWithAggregatesFilter<"Blog"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Blog"> | Date | string
     description?: StringWithAggregatesFilter<"Blog"> | string
     isPublished?: BoolWithAggregatesFilter<"Blog"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"Blog"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Blog"> | Date | string
   }
 
@@ -8296,8 +8276,6 @@ export namespace Prisma {
     OR?: NoteWhereInput[]
     NOT?: NoteWhereInput | NoteWhereInput[]
     id?: IntFilter<"Note"> | number
-    title?: StringFilter<"Note"> | string
-    link?: StringFilter<"Note"> | string
     content?: StringFilter<"Note"> | string
     createdAt?: DateTimeFilter<"Note"> | Date | string
     tags?: NoteTagListRelationFilter
@@ -8305,8 +8283,6 @@ export namespace Prisma {
 
   export type NoteOrderByWithRelationInput = {
     id?: SortOrder
-    title?: SortOrder
-    link?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
     tags?: NoteTagOrderByRelationAggregateInput
@@ -8314,20 +8290,16 @@ export namespace Prisma {
 
   export type NoteWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    link?: string
     AND?: NoteWhereInput | NoteWhereInput[]
     OR?: NoteWhereInput[]
     NOT?: NoteWhereInput | NoteWhereInput[]
-    title?: StringFilter<"Note"> | string
     content?: StringFilter<"Note"> | string
     createdAt?: DateTimeFilter<"Note"> | Date | string
     tags?: NoteTagListRelationFilter
-  }, "id" | "link">
+  }, "id">
 
   export type NoteOrderByWithAggregationInput = {
     id?: SortOrder
-    title?: SortOrder
-    link?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
     _count?: NoteCountOrderByAggregateInput
@@ -8342,8 +8314,6 @@ export namespace Prisma {
     OR?: NoteScalarWhereWithAggregatesInput[]
     NOT?: NoteScalarWhereWithAggregatesInput | NoteScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Note"> | number
-    title?: StringWithAggregatesFilter<"Note"> | string
-    link?: StringWithAggregatesFilter<"Note"> | string
     content?: StringWithAggregatesFilter<"Note"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Note"> | Date | string
   }
@@ -8560,65 +8530,65 @@ export namespace Prisma {
   export type BlogCreateInput = {
     title: string
     link: string
+    createdAt?: Date | string
     description: string
     isPublished?: boolean
-    createdAt?: Date | string
     updatedAt?: Date | string
-    tags?: BlogTagCreateNestedManyWithoutBlogInput
     sections?: BlogContentCreateNestedManyWithoutBlogInput
+    tags?: BlogTagCreateNestedManyWithoutBlogInput
   }
 
   export type BlogUncheckedCreateInput = {
     id?: number
     title: string
     link: string
+    createdAt?: Date | string
     description: string
     isPublished?: boolean
-    createdAt?: Date | string
     updatedAt?: Date | string
-    tags?: BlogTagUncheckedCreateNestedManyWithoutBlogInput
     sections?: BlogContentUncheckedCreateNestedManyWithoutBlogInput
+    tags?: BlogTagUncheckedCreateNestedManyWithoutBlogInput
   }
 
   export type BlogUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tags?: BlogTagUpdateManyWithoutBlogNestedInput
     sections?: BlogContentUpdateManyWithoutBlogNestedInput
+    tags?: BlogTagUpdateManyWithoutBlogNestedInput
   }
 
   export type BlogUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tags?: BlogTagUncheckedUpdateManyWithoutBlogNestedInput
     sections?: BlogContentUncheckedUpdateManyWithoutBlogNestedInput
+    tags?: BlogTagUncheckedUpdateManyWithoutBlogNestedInput
   }
 
   export type BlogCreateManyInput = {
     id?: number
     title: string
     link: string
+    createdAt?: Date | string
     description: string
     isPublished?: boolean
-    createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type BlogUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -8626,15 +8596,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoteCreateInput = {
-    title: string
-    link: string
     content: string
     createdAt?: Date | string
     tags?: NoteTagCreateNestedManyWithoutNoteInput
@@ -8642,16 +8610,12 @@ export namespace Prisma {
 
   export type NoteUncheckedCreateInput = {
     id?: number
-    title: string
-    link: string
     content: string
     createdAt?: Date | string
     tags?: NoteTagUncheckedCreateNestedManyWithoutNoteInput
   }
 
   export type NoteUpdateInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: NoteTagUpdateManyWithoutNoteNestedInput
@@ -8659,8 +8623,6 @@ export namespace Prisma {
 
   export type NoteUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: NoteTagUncheckedUpdateManyWithoutNoteNestedInput
@@ -8668,23 +8630,17 @@ export namespace Prisma {
 
   export type NoteCreateManyInput = {
     id?: number
-    title: string
-    link: string
     content: string
     createdAt?: Date | string
   }
 
   export type NoteUpdateManyMutationInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoteUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8896,11 +8852,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8912,10 +8863,9 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type BlogTagListRelationFilter = {
-    every?: BlogTagWhereInput
-    some?: BlogTagWhereInput
-    none?: BlogTagWhereInput
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type BlogContentListRelationFilter = {
@@ -8924,11 +8874,17 @@ export namespace Prisma {
     none?: BlogContentWhereInput
   }
 
-  export type BlogTagOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type BlogTagListRelationFilter = {
+    every?: BlogTagWhereInput
+    some?: BlogTagWhereInput
+    none?: BlogTagWhereInput
   }
 
   export type BlogContentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type BlogTagOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8936,9 +8892,9 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
     description?: SortOrder
     isPublished?: SortOrder
-    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -8950,9 +8906,9 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
     description?: SortOrder
     isPublished?: SortOrder
-    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -8960,9 +8916,9 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
     description?: SortOrder
     isPublished?: SortOrder
-    createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -9004,14 +8960,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9026,6 +8974,14 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NoteTagListRelationFilter = {
     every?: NoteTagWhereInput
     some?: NoteTagWhereInput
@@ -9038,8 +8994,6 @@ export namespace Prisma {
 
   export type NoteCountOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    link?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
   }
@@ -9050,16 +9004,12 @@ export namespace Prisma {
 
   export type NoteMaxOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    link?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
   }
 
   export type NoteMinOrderByAggregateInput = {
     id?: SortOrder
-    title?: SortOrder
-    link?: SortOrder
     content?: SortOrder
     createdAt?: SortOrder
   }
@@ -9249,13 +9199,6 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
-  export type BlogTagCreateNestedManyWithoutBlogInput = {
-    create?: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput> | BlogTagCreateWithoutBlogInput[] | BlogTagUncheckedCreateWithoutBlogInput[]
-    connectOrCreate?: BlogTagCreateOrConnectWithoutBlogInput | BlogTagCreateOrConnectWithoutBlogInput[]
-    createMany?: BlogTagCreateManyBlogInputEnvelope
-    connect?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
-  }
-
   export type BlogContentCreateNestedManyWithoutBlogInput = {
     create?: XOR<BlogContentCreateWithoutBlogInput, BlogContentUncheckedCreateWithoutBlogInput> | BlogContentCreateWithoutBlogInput[] | BlogContentUncheckedCreateWithoutBlogInput[]
     connectOrCreate?: BlogContentCreateOrConnectWithoutBlogInput | BlogContentCreateOrConnectWithoutBlogInput[]
@@ -9263,7 +9206,7 @@ export namespace Prisma {
     connect?: BlogContentWhereUniqueInput | BlogContentWhereUniqueInput[]
   }
 
-  export type BlogTagUncheckedCreateNestedManyWithoutBlogInput = {
+  export type BlogTagCreateNestedManyWithoutBlogInput = {
     create?: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput> | BlogTagCreateWithoutBlogInput[] | BlogTagUncheckedCreateWithoutBlogInput[]
     connectOrCreate?: BlogTagCreateOrConnectWithoutBlogInput | BlogTagCreateOrConnectWithoutBlogInput[]
     createMany?: BlogTagCreateManyBlogInputEnvelope
@@ -9277,30 +9220,23 @@ export namespace Prisma {
     connect?: BlogContentWhereUniqueInput | BlogContentWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
+  export type BlogTagUncheckedCreateNestedManyWithoutBlogInput = {
+    create?: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput> | BlogTagCreateWithoutBlogInput[] | BlogTagUncheckedCreateWithoutBlogInput[]
+    connectOrCreate?: BlogTagCreateOrConnectWithoutBlogInput | BlogTagCreateOrConnectWithoutBlogInput[]
+    createMany?: BlogTagCreateManyBlogInputEnvelope
+    connect?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
 
-  export type BlogTagUpdateManyWithoutBlogNestedInput = {
-    create?: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput> | BlogTagCreateWithoutBlogInput[] | BlogTagUncheckedCreateWithoutBlogInput[]
-    connectOrCreate?: BlogTagCreateOrConnectWithoutBlogInput | BlogTagCreateOrConnectWithoutBlogInput[]
-    upsert?: BlogTagUpsertWithWhereUniqueWithoutBlogInput | BlogTagUpsertWithWhereUniqueWithoutBlogInput[]
-    createMany?: BlogTagCreateManyBlogInputEnvelope
-    set?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
-    disconnect?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
-    delete?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
-    connect?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
-    update?: BlogTagUpdateWithWhereUniqueWithoutBlogInput | BlogTagUpdateWithWhereUniqueWithoutBlogInput[]
-    updateMany?: BlogTagUpdateManyWithWhereWithoutBlogInput | BlogTagUpdateManyWithWhereWithoutBlogInput[]
-    deleteMany?: BlogTagScalarWhereInput | BlogTagScalarWhereInput[]
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type BlogContentUpdateManyWithoutBlogNestedInput = {
@@ -9317,15 +9253,7 @@ export namespace Prisma {
     deleteMany?: BlogContentScalarWhereInput | BlogContentScalarWhereInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type BlogTagUncheckedUpdateManyWithoutBlogNestedInput = {
+  export type BlogTagUpdateManyWithoutBlogNestedInput = {
     create?: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput> | BlogTagCreateWithoutBlogInput[] | BlogTagUncheckedCreateWithoutBlogInput[]
     connectOrCreate?: BlogTagCreateOrConnectWithoutBlogInput | BlogTagCreateOrConnectWithoutBlogInput[]
     upsert?: BlogTagUpsertWithWhereUniqueWithoutBlogInput | BlogTagUpsertWithWhereUniqueWithoutBlogInput[]
@@ -9337,6 +9265,14 @@ export namespace Prisma {
     update?: BlogTagUpdateWithWhereUniqueWithoutBlogInput | BlogTagUpdateWithWhereUniqueWithoutBlogInput[]
     updateMany?: BlogTagUpdateManyWithWhereWithoutBlogInput | BlogTagUpdateManyWithWhereWithoutBlogInput[]
     deleteMany?: BlogTagScalarWhereInput | BlogTagScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type BlogContentUncheckedUpdateManyWithoutBlogNestedInput = {
@@ -9351,6 +9287,20 @@ export namespace Prisma {
     update?: BlogContentUpdateWithWhereUniqueWithoutBlogInput | BlogContentUpdateWithWhereUniqueWithoutBlogInput[]
     updateMany?: BlogContentUpdateManyWithWhereWithoutBlogInput | BlogContentUpdateManyWithWhereWithoutBlogInput[]
     deleteMany?: BlogContentScalarWhereInput | BlogContentScalarWhereInput[]
+  }
+
+  export type BlogTagUncheckedUpdateManyWithoutBlogNestedInput = {
+    create?: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput> | BlogTagCreateWithoutBlogInput[] | BlogTagUncheckedCreateWithoutBlogInput[]
+    connectOrCreate?: BlogTagCreateOrConnectWithoutBlogInput | BlogTagCreateOrConnectWithoutBlogInput[]
+    upsert?: BlogTagUpsertWithWhereUniqueWithoutBlogInput | BlogTagUpsertWithWhereUniqueWithoutBlogInput[]
+    createMany?: BlogTagCreateManyBlogInputEnvelope
+    set?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
+    disconnect?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
+    delete?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
+    connect?: BlogTagWhereUniqueInput | BlogTagWhereUniqueInput[]
+    update?: BlogTagUpdateWithWhereUniqueWithoutBlogInput | BlogTagUpdateWithWhereUniqueWithoutBlogInput[]
+    updateMany?: BlogTagUpdateManyWithWhereWithoutBlogInput | BlogTagUpdateManyWithWhereWithoutBlogInput[]
+    deleteMany?: BlogTagScalarWhereInput | BlogTagScalarWhereInput[]
   }
 
   export type NoteTagCreateNestedManyWithoutNoteInput = {
@@ -9578,11 +9528,6 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9592,6 +9537,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -9638,14 +9588,6 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -9658,6 +9600,14 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
@@ -9702,24 +9652,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type BlogTagCreateWithoutBlogInput = {
-    tag: TagCreateNestedOneWithoutBlogsInput
-  }
-
-  export type BlogTagUncheckedCreateWithoutBlogInput = {
-    tagId: number
-  }
-
-  export type BlogTagCreateOrConnectWithoutBlogInput = {
-    where: BlogTagWhereUniqueInput
-    create: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput>
-  }
-
-  export type BlogTagCreateManyBlogInputEnvelope = {
-    data: BlogTagCreateManyBlogInput | BlogTagCreateManyBlogInput[]
-    skipDuplicates?: boolean
-  }
-
   export type BlogContentCreateWithoutBlogInput = {
     content: string
     sortOrder: number
@@ -9743,28 +9675,22 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BlogTagUpsertWithWhereUniqueWithoutBlogInput = {
+  export type BlogTagCreateWithoutBlogInput = {
+    tag: TagCreateNestedOneWithoutBlogsInput
+  }
+
+  export type BlogTagUncheckedCreateWithoutBlogInput = {
+    tagId: number
+  }
+
+  export type BlogTagCreateOrConnectWithoutBlogInput = {
     where: BlogTagWhereUniqueInput
-    update: XOR<BlogTagUpdateWithoutBlogInput, BlogTagUncheckedUpdateWithoutBlogInput>
     create: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput>
   }
 
-  export type BlogTagUpdateWithWhereUniqueWithoutBlogInput = {
-    where: BlogTagWhereUniqueInput
-    data: XOR<BlogTagUpdateWithoutBlogInput, BlogTagUncheckedUpdateWithoutBlogInput>
-  }
-
-  export type BlogTagUpdateManyWithWhereWithoutBlogInput = {
-    where: BlogTagScalarWhereInput
-    data: XOR<BlogTagUpdateManyMutationInput, BlogTagUncheckedUpdateManyWithoutBlogInput>
-  }
-
-  export type BlogTagScalarWhereInput = {
-    AND?: BlogTagScalarWhereInput | BlogTagScalarWhereInput[]
-    OR?: BlogTagScalarWhereInput[]
-    NOT?: BlogTagScalarWhereInput | BlogTagScalarWhereInput[]
-    blogId?: IntFilter<"BlogTag"> | number
-    tagId?: IntFilter<"BlogTag"> | number
+  export type BlogTagCreateManyBlogInputEnvelope = {
+    data: BlogTagCreateManyBlogInput | BlogTagCreateManyBlogInput[]
+    skipDuplicates?: boolean
   }
 
   export type BlogContentUpsertWithWhereUniqueWithoutBlogInput = {
@@ -9792,6 +9718,30 @@ export namespace Prisma {
     content?: StringFilter<"BlogContent"> | string
     sortOrder?: IntFilter<"BlogContent"> | number
     type?: StringFilter<"BlogContent"> | string
+  }
+
+  export type BlogTagUpsertWithWhereUniqueWithoutBlogInput = {
+    where: BlogTagWhereUniqueInput
+    update: XOR<BlogTagUpdateWithoutBlogInput, BlogTagUncheckedUpdateWithoutBlogInput>
+    create: XOR<BlogTagCreateWithoutBlogInput, BlogTagUncheckedCreateWithoutBlogInput>
+  }
+
+  export type BlogTagUpdateWithWhereUniqueWithoutBlogInput = {
+    where: BlogTagWhereUniqueInput
+    data: XOR<BlogTagUpdateWithoutBlogInput, BlogTagUncheckedUpdateWithoutBlogInput>
+  }
+
+  export type BlogTagUpdateManyWithWhereWithoutBlogInput = {
+    where: BlogTagScalarWhereInput
+    data: XOR<BlogTagUpdateManyMutationInput, BlogTagUncheckedUpdateManyWithoutBlogInput>
+  }
+
+  export type BlogTagScalarWhereInput = {
+    AND?: BlogTagScalarWhereInput | BlogTagScalarWhereInput[]
+    OR?: BlogTagScalarWhereInput[]
+    NOT?: BlogTagScalarWhereInput | BlogTagScalarWhereInput[]
+    blogId?: IntFilter<"BlogTag"> | number
+    tagId?: IntFilter<"BlogTag"> | number
   }
 
   export type NoteTagCreateWithoutNoteInput = {
@@ -9907,9 +9857,9 @@ export namespace Prisma {
   export type BlogCreateWithoutTagsInput = {
     title: string
     link: string
+    createdAt?: Date | string
     description: string
     isPublished?: boolean
-    createdAt?: Date | string
     updatedAt?: Date | string
     sections?: BlogContentCreateNestedManyWithoutBlogInput
   }
@@ -9918,9 +9868,9 @@ export namespace Prisma {
     id?: number
     title: string
     link: string
+    createdAt?: Date | string
     description: string
     isPublished?: boolean
-    createdAt?: Date | string
     updatedAt?: Date | string
     sections?: BlogContentUncheckedCreateNestedManyWithoutBlogInput
   }
@@ -9966,9 +9916,9 @@ export namespace Prisma {
   export type BlogUpdateWithoutTagsInput = {
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sections?: BlogContentUpdateManyWithoutBlogNestedInput
   }
@@ -9977,9 +9927,9 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sections?: BlogContentUncheckedUpdateManyWithoutBlogNestedInput
   }
@@ -10013,16 +9963,12 @@ export namespace Prisma {
   }
 
   export type NoteCreateWithoutTagsInput = {
-    title: string
-    link: string
     content: string
     createdAt?: Date | string
   }
 
   export type NoteUncheckedCreateWithoutTagsInput = {
     id?: number
-    title: string
-    link: string
     content: string
     createdAt?: Date | string
   }
@@ -10066,16 +10012,12 @@ export namespace Prisma {
   }
 
   export type NoteUpdateWithoutTagsInput = {
-    title?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type NoteUncheckedUpdateWithoutTagsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    title?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10111,9 +10053,9 @@ export namespace Prisma {
   export type BlogCreateWithoutSectionsInput = {
     title: string
     link: string
+    createdAt?: Date | string
     description: string
     isPublished?: boolean
-    createdAt?: Date | string
     updatedAt?: Date | string
     tags?: BlogTagCreateNestedManyWithoutBlogInput
   }
@@ -10122,9 +10064,9 @@ export namespace Prisma {
     id?: number
     title: string
     link: string
+    createdAt?: Date | string
     description: string
     isPublished?: boolean
-    createdAt?: Date | string
     updatedAt?: Date | string
     tags?: BlogTagUncheckedCreateNestedManyWithoutBlogInput
   }
@@ -10148,9 +10090,9 @@ export namespace Prisma {
   export type BlogUpdateWithoutSectionsInput = {
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: BlogTagUpdateManyWithoutBlogNestedInput
   }
@@ -10159,15 +10101,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     isPublished?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     tags?: BlogTagUncheckedUpdateManyWithoutBlogNestedInput
-  }
-
-  export type BlogTagCreateManyBlogInput = {
-    tagId: number
   }
 
   export type BlogContentCreateManyBlogInput = {
@@ -10177,16 +10115,8 @@ export namespace Prisma {
     type: string
   }
 
-  export type BlogTagUpdateWithoutBlogInput = {
-    tag?: TagUpdateOneRequiredWithoutBlogsNestedInput
-  }
-
-  export type BlogTagUncheckedUpdateWithoutBlogInput = {
-    tagId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type BlogTagUncheckedUpdateManyWithoutBlogInput = {
-    tagId?: IntFieldUpdateOperationsInput | number
+  export type BlogTagCreateManyBlogInput = {
+    tagId: number
   }
 
   export type BlogContentUpdateWithoutBlogInput = {
@@ -10207,6 +10137,18 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     sortOrder?: IntFieldUpdateOperationsInput | number
     type?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type BlogTagUpdateWithoutBlogInput = {
+    tag?: TagUpdateOneRequiredWithoutBlogsNestedInput
+  }
+
+  export type BlogTagUncheckedUpdateWithoutBlogInput = {
+    tagId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type BlogTagUncheckedUpdateManyWithoutBlogInput = {
+    tagId?: IntFieldUpdateOperationsInput | number
   }
 
   export type NoteTagCreateManyNoteInput = {

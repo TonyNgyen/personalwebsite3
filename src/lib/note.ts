@@ -4,25 +4,19 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "./prisma";
 
 export async function createNote(formData: FormData) {
-  const title = formData.get("title") as string;
-  const link = formData.get("link") as string;
   const content = formData.get("content") as string;
-  // tags will come as a comma-separated string or multiple entries, let's normalize:
-  const tags = formData.getAll("tags") as string[]; // getAll to support multiple selections
+  const tags = formData.getAll("tags") as string[];
 
-  if (!title || !link || !content) {
+  if (!content) {
     throw new Error("All fields required.");
   }
 
-  // Convert tag IDs from string to number and filter out invalid entries
   const tagIds = tags
     .map((id) => Number(id))
     .filter((id) => !isNaN(id) && id > 0);
 
   await prisma.note.create({
     data: {
-      title,
-      link,
       content,
       tags: {
         create: tagIds.map((tagId) => ({
@@ -34,18 +28,22 @@ export async function createNote(formData: FormData) {
     },
   });
 
-  revalidatePath("/"); // Revalidate homepage or blog list if needed
+  revalidatePath("/");
 }
 
 export async function getNotes() {
-  return await prisma.note.findMany({
+  const notes = await prisma.note.findMany({
     orderBy: { createdAt: "desc" },
     include: {
       tags: {
         include: {
-          tag: true, // Include tag details like `label`
+          tag: true,
         },
       },
     },
   });
+  return notes.map((note) => ({
+    ...note,
+    tags: note.tags.map((nt) => nt.tag),
+  }));
 }

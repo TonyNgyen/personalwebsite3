@@ -4,15 +4,12 @@ import { useState, useEffect } from "react";
 import { createNote } from "./note-actions";
 import { getAllTags } from "./tag-actions";
 import { Tag } from "@/types/types";
-import BlogCard from "@/components/BlogCard";
+import NoteCard from "@/components/NoteCard";
 
 export default function NoteModalForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
-
-  const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
   const [content, setContent] = useState("");
 
   useEffect(() => {
@@ -36,8 +33,6 @@ export default function NoteModalForm() {
 
     await createNote(formData);
     setIsOpen(false);
-    setTitle("");
-    setLink("");
     setContent("");
     setSelectedTagIds([]);
   }
@@ -52,38 +47,10 @@ export default function NoteModalForm() {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white p-6 rounded shadow-lg w-full max-w-lg max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl font-semibold mb-4">Create Note</h2>
             <form action={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="title" className="block text-sm font-medium">
-                  Title
-                </label>
-                <input
-                  id="title"
-                  name="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border rounded"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="link" className="block text-sm font-medium">
-                  Link (slug)
-                </label>
-                <input
-                  id="link"
-                  name="link"
-                  value={link}
-                  onChange={(e) => setLink(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border rounded"
-                />
-              </div>
-
               <div>
                 <label htmlFor="content" className="block text-sm font-medium">
                   Content
@@ -147,15 +114,18 @@ export default function NoteModalForm() {
                 </button>
               </div>
 
-              {title && content && (
+              {content && (
                 <>
                   <h3 className="text-lg font-semibold mt-6 mb-2">Preview</h3>
-                  <BlogCard
-                    title={title}
-                    url={link ? `/blogs/${link}` : "#"}
-                    date={new Date()}
-                    description={content.slice(0, 100)}
-                    tags={tags.filter((tag) => selectedTagIds.includes(tag.id))}
+                  <NoteCard
+                    note={{
+                      id: 1,
+                      content,
+                      tags: tags.filter((tag) =>
+                        selectedTagIds.includes(tag.id)
+                      ),
+                      createdAt: new Date(),
+                    }}
                   />
                 </>
               )}

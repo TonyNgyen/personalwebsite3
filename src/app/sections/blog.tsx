@@ -20,7 +20,7 @@ async function Blog() {
       </div>
       {blogs.length !== 0 ? (
         <div className="space-y-4">
-          {blogs.map((blog) => (
+          {blogs.slice(0,3).map((blog) => (
             <BlogCard
               key={blog.id}
               title={blog.title}

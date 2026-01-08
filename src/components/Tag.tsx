@@ -8,7 +8,7 @@ export function Tag({ tag }: { tag: Tag }) {
       }}
       className="inline-flex items-center rounded-full px-3 py-1"
     >
-      <p className="font-semibold" style={{ color: tag.textColor }}>
+      <p className="font-medium text-sm" style={{ color: tag.textColor }}>
         {tag.emoji ? `${tag.emoji} ` : ""}
         {tag.label}
       </p>

@@ -1,13 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "windows", "darwin-arm64"]
   output        = "../src/generated/prisma"
+  binaryTargets = ["native", "windows", "darwin-arm64"]
 }
 
 datasource db {
@@ -19,21 +13,19 @@ model Blog {
   id          Int           @id @default(autoincrement())
   title       String
   link        String        @unique
+  createdAt   DateTime      @default(now())
   description String
   isPublished Boolean       @default(false)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now()) @updatedAt // Add this temporarily
-  tags        BlogTag[]
+  updatedAt   DateTime      @default(now()) @updatedAt
   sections    BlogContent[]
+  tags        BlogTag[]
 }
 
 model Note {
   id        Int       @id @default(autoincrement())
-  title     String
-  link      String    @unique
   content   String
   createdAt DateTime  @default(now())
-  tags      NoteTag[] // relation to join table
+  tags      NoteTag[]
 }
 
 model Tag {
@@ -46,33 +38,31 @@ model Tag {
   notes     NoteTag[]
 }
 
-// Join table for Blog <-> Tag many-to-many
 model BlogTag {
   blogId Int
   tagId  Int
   blog   Blog @relation(fields: [blogId], references: [id], onDelete: Cascade)
   tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
-  @@id([blogId, tagId]) // composite primary key
+  @@id([blogId, tagId])
 }
 
-// Join table for Note <-> Tag many-to-many
 model NoteTag {
   noteId Int
   tagId  Int
   note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
   tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
-  @@id([noteId, tagId]) // composite primary key
+  @@id([noteId, tagId])
 }
 
 model BlogContent {
   id        Int    @id @default(autoincrement())
   blogId    Int
-  content   String @db.Text // Using Text for potentially long content
+  content   String
   sortOrder Int
-  type      String // "text" or "image"
+  type      String
   blog      Blog   @relation(fields: [blogId], references: [id], onDelete: Cascade)
 
-  @@index([blogId, sortOrder]) // Index for faster queries when fetching sections in order
+  @@index([blogId, sortOrder])
 }

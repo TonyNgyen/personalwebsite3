@@ -9,10 +9,8 @@ export type Blog = {
 
 export type Note = {
   id: number;
-  title: string;
-  link: string;
-  content: string;
   createdAt: Date;
+  content: string;
   tags?: Tag[];
 };
 
@@ -20,7 +18,7 @@ export type Tag = {
   id: number;
   label: string;
   emoji: string | null;
-  bgColor: string;     // Tailwind class, e.g. "bg-blue-100"
+  bgColor: string; // Tailwind class, e.g. "bg-blue-100"
   textColor: string; // Tailwind class, e.g. "border-blue-500"
 };
 

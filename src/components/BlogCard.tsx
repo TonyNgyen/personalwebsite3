@@ -29,7 +29,7 @@ export default function BlogCard({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="transition flex duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-200/70 bg-gray-100 border-1 hover:border hover:border-gray-100 border-gray-100 rounded dark:hover:bg-gray-800 dark:hover:border-gray-800 dark:bg-gray-800/70 dark:border-gray-800"
+      className="transition flex duration-200 flex-col sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-200/60 bg-gray-100/80 border-1 hover:border hover:border-gray-100 border-gray-200/60 rounded-md dark:hover:bg-gray-800 dark:hover:border-gray-800 dark:bg-gray-800/70 dark:border-gray-800"
     >
       <div>
         <h2 className="text-xl font-semibold">
@@ -37,7 +37,9 @@ export default function BlogCard({
           <span className="dark:text-emerald-300 text-emerald-500 font-bold">
             ·
           </span>{" "}
-          <span className="text-gray-500 dark:text-gray-200">{formattedDate}</span>
+          <span className="text-gray-500 dark:text-gray-200">
+            {formattedDate}
+          </span>
         </h2>
         <h3 className="mt-3">{description}</h3>
         {tags.length > 0 && (
