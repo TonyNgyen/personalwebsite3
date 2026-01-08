@@ -45,7 +45,7 @@ function NoteCard({ note }: { note: Note }) {
         </div>
 
         {/* Body */}
-        <p className="text-gray-700 dark:text-gray-200 leading-relaxed line-clamp-3 mb-4">
+        <p className="text-gray-700 dark:text-gray-200 leading-relaxed line-clamp-2 mb-4">
           {note.content}
         </p>
 

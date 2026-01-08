@@ -4,12 +4,10 @@ import { prisma } from "../../lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function createNote(formData: FormData) {
-  const title = formData.get("title") as string;
-  const link = formData.get("link") as string;
   const content = formData.get("content") as string;
   const tags = formData.getAll("tags") as string[];
 
-  if (!title || !link || !content) {
+  if (!content) {
     throw new Error("All fields required.");
   }
 
@@ -19,8 +17,6 @@ export async function createNote(formData: FormData) {
 
   await prisma.note.create({
     data: {
-      title,
-      link,
       content,
       tags: {
         create: tagIds.map((tagId) => ({
@@ -36,7 +32,7 @@ export async function createNote(formData: FormData) {
 }
 
 export async function getNotes() {
-  return await prisma.note.findMany({
+  const notes = await prisma.note.findMany({
     orderBy: { createdAt: "desc" },
     include: {
       tags: {
@@ -46,4 +42,8 @@ export async function getNotes() {
       },
     },
   });
+  return notes.map((note) => ({
+    ...note,
+    tags: note.tags.map((nt) => nt.tag),
+  }));
 }

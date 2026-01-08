@@ -41,7 +41,7 @@ export default function TagModalForm() {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="bg-white p-6 rounded shadow-lg w-1/2 overflow-auto h-11/12">
             <h2 className="text-lg font-semibold mb-4">Create Tag</h2>
 

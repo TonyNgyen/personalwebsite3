@@ -8,8 +8,8 @@ export type Blog = {
 };
 
 export type Note = {
-  id: string;
-  createdAt: string;
+  id: number;
+  createdAt: Date;
   content: string;
   tags?: Tag[];
 };

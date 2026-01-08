@@ -1,8 +1,9 @@
-import BlogCard from "@/components/BlogCard";
+
 import React from "react";
 import { getNotes } from "../admin/note-actions";
 import { FiChevronLeft } from "react-icons/fi";
 import Link from "next/link";
+import NoteCard from "@/components/NoteCard";
 
 async function BlogPage() {
   const notes = await getNotes();
@@ -12,16 +13,7 @@ async function BlogPage() {
       {notes.length != 0 ? (
         <div className="space-y-4">
           {notes.map((note) => (
-            <BlogCard
-              key={note.id}
-              title={note.title}
-              url={
-                note.link.startsWith("http") ? note.link : `/notes/${note.link}`
-              }
-              date={new Date(note.createdAt)}
-              description={note.content.slice(0, 100)}
-              tags={note.tags?.map(({ tag }) => tag) || []}
-            />
+            <NoteCard key={note.id} note={note} />
           ))}
         </div>
       ) : (

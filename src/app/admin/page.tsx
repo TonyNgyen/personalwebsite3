@@ -2,15 +2,16 @@ import BlogModalForm from "./BlogModalForm";
 import TagModalForm from "./TagModalForm";
 import { getAllTags } from "./tag-actions";
 import { Tag } from "@/components/Tag";
-import BlogCard from "@/components/BlogCard";
 import NoteModalForm from "./NoteModalForm";
 import { getNotes } from "./note-actions";
 import { getAllBlogs } from "./blog-creator/blog-actions";
 import BlogAdminCard from "@/components/BlogAdminCard";
+import NoteCard from "@/components/NoteCard";
+import { Note } from "@/generated/prisma";
 
 export default async function AdminPage() {
-  const blogs = await getAllBlogs(); // This gets ALL blogs including drafts
-  const notes = await getNotes();
+  const blogs = await getAllBlogs();
+  const notes: Note[] = await getNotes();
   const tags = await getAllTags();
 
   return (
@@ -29,16 +30,7 @@ export default async function AdminPage() {
         <h2 className="text-2xl font-semibold mb-4">All Notes</h2>
         <div className="flex flex-col gap-4">
           {notes.map((note) => (
-            <BlogCard
-              key={note.id}
-              title={note.title}
-              url={
-                note.link.startsWith("http") ? note.link : `/notes/${note.link}`
-              }
-              date={new Date(note.createdAt)}
-              description=""
-              tags={note.tags?.map(({ tag }) => tag) || []}
-            />
+            <NoteCard key={note.id} note={note} />
           ))}
         </div>
       </div>
