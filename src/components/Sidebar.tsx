@@ -10,7 +10,7 @@ import { useState } from "react";
 
 export default function Sidebar({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
-  const chips = ["Coding", "Making", "Learning", "Lifting", "Exploring"];
+  const chips = ["Coding", "Building", "Learning", "Exploring"];
 
   return (
     <>

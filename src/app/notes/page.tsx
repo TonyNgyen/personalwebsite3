@@ -1,4 +1,3 @@
-
 import React from "react";
 import { getNotes } from "../admin/note-actions";
 import { FiChevronLeft } from "react-icons/fi";
@@ -11,7 +10,7 @@ async function BlogPage() {
     <div className="space-y-4 tracking-wide -ml-4">
       <h1 className="text-4xl font-semibold pl-4">All Notes</h1>
       {notes.length != 0 ? (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
           {notes.map((note) => (
             <NoteCard key={note.id} note={note} />
           ))}
