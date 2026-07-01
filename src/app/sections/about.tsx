@@ -13,7 +13,7 @@ function About() {
         experiences across different platforms.
       </h2>
       <h2 className="text-lg sm:text-xl tracking-wide leading-7 sm:leading-9">
-        I just graduated from UCSD with a Masters in Computer Science, and I'm building apps that make life a little easier. Right now, my
+        I just graduated from UCSD with a Masters in Computer Science, and I&apos;m building apps that make life a little easier. Right now, my
         focus is on helping people live healthier lives through meal tracking
         and fitness with{" "}
         <a
