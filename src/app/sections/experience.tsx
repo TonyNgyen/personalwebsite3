@@ -7,10 +7,7 @@ function Experience() {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-start gap-4 p-4">
           <h2 className="text-xl min-w-[10rem] text-gray-500 dark:text-gray-200">
-            2023 -{" "}
-            <span className="text-emerald-500 dark:text-emerald-300 font-semibold">
-              Present
-            </span>
+            2023 - 2026
           </h2>
           <div>
             <h2 className="text-xl font-semibold">

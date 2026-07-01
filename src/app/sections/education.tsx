@@ -12,11 +12,7 @@ function Education() {
           className="flex flex-col transition duration-200 sm:flex-row sm:items-start gap-4 p-4 hover:bg-gray-100/50 border-1 border-transparent hover:border hover:border-gray-100 dark:hover:bg-gray-800/50 dark:hover:border-gray-800 rounded"
         >
           <h2 className="text-xl min-w-[10rem] text-gray-500 dark:text-gray-200">
-            2025 -
-            <span className="text-emerald-500 dark:text-emerald-300 font-semibold">
-              {" "}
-              Present
-            </span>
+            2025 - 2026
           </h2>
           <div>
             <h2 className="text-xl font-semibold">UC San Diego</h2>

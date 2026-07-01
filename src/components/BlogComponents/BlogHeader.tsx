@@ -13,7 +13,7 @@ function BlogHeader({ children, className = "", date }: Props) {
       <p className="text-xl font-semibold dark:text-gray-200 text-gray-500">
         {date}
       </p>
-      <div className="border-b-[6px] border-emerald-500 dark:border-emerald-300 pb-2 w-[5%]"></div>
+      <div className="border-b-[6px] border-accent pb-2 w-[5%]"></div>
     </div>
   );
 }

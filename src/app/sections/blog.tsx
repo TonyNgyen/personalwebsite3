@@ -13,7 +13,7 @@ async function Blog() {
       <div className="flex items-center pl-4">
         <h1 className="text-4xl font-semibold">Blog</h1>
         <Tooltip text="In-depth posts on projects, app updates, and topics I care about.">
-          <button className="ml-2 flex items-center text-2xl text-emerald-500 dark:text-emerald-300">
+          <button className="ml-2 flex items-center text-2xl text-accent">
             <FiInfo />
           </button>
         </Tooltip>
@@ -38,10 +38,10 @@ async function Blog() {
       )}
 
       <Link href="/blogs" className="group flex items-center gap-2">
-        <h2 className="pl-4 text-xl font-semibold group-hover:underline group-hover:decoration-emerald-500 dark:group-hover:decoration-emerald-300 group-hover:underline-offset-4 transition-all duration-200">
+        <h2 className="pl-4 text-xl font-semibold group-hover:underline group-hover:decoration-accent group-hover:underline-offset-4 transition-all duration-200">
           View All Blogs
         </h2>
-        <FiChevronRight className="text-2xl transition-transform duration-200 group-hover:translate-x-2 group-hover:text-emerald-500 dark:group-hover:text-emerald-300" />
+        <FiChevronRight className="text-2xl transition-transform duration-200 group-hover:translate-x-2 group-hover:text-accent" />
       </Link>
     </div>
   );

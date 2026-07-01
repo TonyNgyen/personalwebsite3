@@ -14,7 +14,7 @@ export default function GlobalNotFound() {
       </p>
       <Link
         href="/"
-        className="px-6 py-3 bg-emerald-500 dark:bg-emerald-400 text-white rounded-lg hover:bg-emerald-600 dark:hover:bg-emerald-500 transition-colors font-semibold"
+        className="px-6 py-3 bg-accent-bg text-white rounded-lg hover:bg-accent-hover transition-colors font-semibold"
       >
         Go Home
       </Link>

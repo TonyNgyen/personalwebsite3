@@ -1,6 +1,26 @@
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+@theme {
+  --color-accent: var(--accent);
+  --color-accent-bg: var(--accent-bg);
+  --color-accent-hover: var(--accent-hover);
+}
+
+:root {
+  /* Change this one value to update the accent color site-wide */
+  --accent-base: #95190C;
+  --accent: var(--accent-base);
+  --accent-bg: var(--accent-base);
+  --accent-hover: color-mix(in srgb, var(--accent-base) 80%, black);
+}
+
+[data-theme="dark"] {
+  --accent: color-mix(in srgb, var(--accent-base) 55%, white);
+  --accent-bg: color-mix(in srgb, var(--accent-base) 70%, white);
+  --accent-hover: var(--accent-base);
+}
+
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;

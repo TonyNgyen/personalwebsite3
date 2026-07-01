@@ -34,7 +34,7 @@ export default function BlogCard({
       <div>
         <h2 className="text-xl font-semibold">
           {title}{" "}
-          <span className="dark:text-emerald-300 text-emerald-500 font-bold">
+          <span className="text-accent font-bold">
             ·
           </span>{" "}
           <span className="text-gray-500 dark:text-gray-200">

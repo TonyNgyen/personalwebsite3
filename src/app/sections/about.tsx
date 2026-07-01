@@ -3,7 +3,7 @@ import React from "react";
 function About() {
   return (
     <div className="space-y-4">
-      <h1 className="text-3xl sm:text-4xl font-bold border-b-[6px] border-emerald-500 dark:border-emerald-300 inline-block pb-2">
+      <h1 className="text-3xl sm:text-4xl font-bold border-b-[6px] border-accent inline-block pb-2">
         Hey, I&apos;m Tony!
       </h1>
       <h2 className="text-lg sm:text-xl tracking-wide leading-7 sm:leading-9">
@@ -13,15 +13,14 @@ function About() {
         experiences across different platforms.
       </h2>
       <h2 className="text-lg sm:text-xl tracking-wide leading-7 sm:leading-9">
-        Currently, I&apos;m a Master&apos;s student at UCSD studying computer
-        science, and building apps that make life a little easier. Right now, my
+        I just graduated from UCSD with a Masters in Computer Science, and I'm building apps that make life a little easier. Right now, my
         focus is on helping people live healthier lives through meal tracking
         and fitness with{" "}
         <a
           href="https://meapprep.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-bold underline hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
+          className="font-bold underline hover:text-accent transition-colors"
         >
           meap
         </a>
