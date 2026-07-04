@@ -1,11 +1,17 @@
+import Image from "next/image";
 import React from "react";
 
 function About() {
   return (
     <div className="space-y-4">
-      <h1 className="text-3xl sm:text-4xl font-bold border-b-[6px] border-accent inline-block pb-2">
-        Hey, I&apos;m Tony!
-      </h1>
+      <div className="flex items-center gap-4">
+
+        <h1 className="text-3xl sm:text-4xl font-bold border-b-[6px] border-accent inline-block pb-2">
+          Hey, I&apos;m Tony!
+        </h1>
+        <Image src="/images/picture.jpeg" alt="Tony" width={100} height={100} className="rounded-full w-20 h-20 object-cover" />
+      </div>
+
       <h2 className="text-lg sm:text-xl tracking-wide leading-7 sm:leading-9">
         I&apos;m a Full-Stack Developer focused on building clean, scalable web
         & mobile apps. I specialize in React, React Native, Next.js, Supabase,
