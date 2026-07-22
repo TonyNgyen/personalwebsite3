@@ -51,7 +51,7 @@ function NoteCard({ note }: { note: Note }) {
 
         {/* Footer: Tags */}
         {note.tags && note.tags.length > 0 && (
-          <div className="flex gap-1.5 flex-wrap pt-3 border-t border-gray-300 dark:border-gray-500">
+          <div className="flex gap-[6px] mt-3 flex-wrap">
             {note.tags.map((tag) => (
               <Tag key={tag.id} tag={tag} />
             ))}
